@@ -38,12 +38,20 @@ export type ToolItemsProps = {
 }
 
 type ToolbarProps = {
-  handleActive: (tool: ToolItemsProps) => void
+  handleActive: (tool: ToolItemsProps, e?: KeyboardEvent) => void
   activeTool: string
   setActiveTool: (value: string) => void
+  imageInputRef?: React.RefObject<HTMLInputElement> | null
+  handleImageUpload?: (e: any) => void
 }
 
-const Toolbar = ({ handleActive, activeTool, setActiveTool }: ToolbarProps) => {
+const Toolbar = ({
+  handleActive,
+  activeTool,
+  setActiveTool,
+  imageInputRef,
+  handleImageUpload,
+}: ToolbarProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isLocked, setIsLocked] = useState(false)
   const toolItems = [
@@ -86,13 +94,7 @@ const Toolbar = ({ handleActive, activeTool, setActiveTool }: ToolbarProps) => {
     },
     {
       title: "Line",
-      icon: (
-        <IconArrowNarrowRight
-          className="text-black"
-          size={16}
-          strokeWidth={1.5}
-        />
-      ),
+      icon: <IconLine className="text-black" size={16} strokeWidth={1.5} />,
       value: "line",
     },
     {
@@ -168,6 +170,12 @@ const Toolbar = ({ handleActive, activeTool, setActiveTool }: ToolbarProps) => {
                       <span className="w-full h-8 bg-black/40" />
                     )}
                   </li>
+                  <input
+                    type="file"
+                    hidden
+                    ref={imageInputRef}
+                    onChange={handleImageUpload}
+                  />
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{item.title}</p>

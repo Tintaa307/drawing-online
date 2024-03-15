@@ -13,10 +13,18 @@ import {
   renderCanvas,
 } from "@/lib/canvas"
 import Toolbar, { ToolItemsProps } from "@/components/toolbar/Toolbar"
-import { useMutation, useStorage } from "../../../liveblocks.config"
-import { handleDelete } from "@/lib/key-events"
+import {
+  useMutation,
+  useRedo,
+  useStorage,
+  useUndo,
+} from "../../../liveblocks.config"
+import { handleDelete, handleKeyDown } from "@/lib/key-events"
+import { handleImageUpload } from "@/lib/shapes"
 
 const Dashboard = () => {
+  const undo = useUndo()
+  const redo = useRedo()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const fabricRef = useRef<fabric.Canvas | null>(null)
   const isDrawing = useRef(false)
@@ -25,6 +33,7 @@ const Dashboard = () => {
   const selectedShapeRef = useRef<string | null>(null)
   const activeObjectRef = useRef<fabric.Object | null>(null)
   const [activeTool, setActiveTool] = useState("Select")
+  const imageInputRef = useRef<HTMLInputElement | null>(null)
 
   const canvasObjects = useStorage((root) => root.canvasObjects)
 
@@ -84,6 +93,17 @@ const Dashboard = () => {
       })
     })
 
+    window.addEventListener("keydown", (e) => {
+      handleKeyDown({
+        e,
+        canvas: fabricRef.current,
+        undo,
+        redo,
+        syncShapeInStorage,
+        deleteShapeFromStorage,
+      })
+    })
+
     window.addEventListener("resize", () => {
       handleResize({ canvas })
     })
@@ -127,11 +147,25 @@ const Dashboard = () => {
     []
   )
 
-  const handleActive = (el: ToolItemsProps) => (event: KeyboardEvent) => {
-    // if (event.key === "Backspace" || event.key === "Delete") {
-    //   setActiveElement("delete")
-    // }
+  useEffect(() => {
+    const keyDownHandler = (e: KeyboardEvent) => {
+      if (e.key === "Backspace" || e.key === "Delete") {
+        handleDelete(fabricRef.current as any, deleteShapeFromStorage)
+        setActiveElement("select")
+        setActiveTool("Select")
+      }
+    }
+
+    window.addEventListener("keydown", keyDownHandler)
+
+    return () => {
+      window.removeEventListener("keydown", keyDownHandler)
+    }
+  }, [])
+
+  const handleActive = (el: ToolItemsProps, e?: KeyboardEvent) => {
     setActiveElement(el.value)
+
     switch (el.value) {
       case "reset":
         deleteAllShapes()
@@ -143,6 +177,14 @@ const Dashboard = () => {
         handleDelete(fabricRef.current as any, deleteShapeFromStorage)
         setActiveElement("select")
         setActiveTool("Select")
+        break
+      case "image":
+        imageInputRef.current?.click()
+        isDrawing.current = false
+
+        if (fabricRef.current) {
+          fabricRef.current.isDrawingMode = false
+        }
         break
 
       default:
@@ -156,6 +198,17 @@ const Dashboard = () => {
         handleActive={handleActive}
         setActiveTool={setActiveTool}
         activeTool={activeTool}
+        imageInputRef={imageInputRef}
+        handleImageUpload={(e: any) => {
+          e.stopPropagation()
+
+          handleImageUpload({
+            file: e.target.files[0],
+            canvas: fabricRef as any,
+            shapeRef,
+            syncShapeInStorage,
+          })
+        }}
       />
       <Live canvasRef={canvasRef} toolSelected={activeElement} />
     </main>

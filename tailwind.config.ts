@@ -81,6 +81,7 @@ const config = {
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "hero-pattern": "url('/hero-pattern.svg')",
       },
       boxShadow: {
         "outline-primary": "0 0 0 3px hsl(var(--primary))",

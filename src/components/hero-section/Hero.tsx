@@ -6,10 +6,10 @@ import Link from "next/link"
 
 const Landing = () => {
   return (
-    <main className="w-full h-screen">
+    <main className="w-full h-screen bg-hero-pattern bg-no-repeat bg-center">
       <div className="w-full h-full flex items-center justify-center flex-col">
         <article className="w-full h-max flex items-center justify-center flex-col gap-4 text-center">
-          <div className="w-max h-max flex items-center justify-center px-4 py-2 flex-row gap-1 border-[1px] border-primary/30 rounded-full shadow-special-primary animate-fade-in-y">
+          <div className="w-max h-max flex items-center justify-center px-4 py-2 flex-row gap-1 border-[1px] border-primary/30 rounded-full bg-bg_color animate-fade-in-y">
             <IconWand size={17} className="text-primary" />
             <small className="text-white/80">
               Your realtime time colaborative app

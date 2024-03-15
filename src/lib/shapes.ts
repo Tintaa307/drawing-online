@@ -14,7 +14,7 @@ export const createRectangle = (pointer: PointerEvent) => {
     top: pointer.y,
     width: 100,
     height: 100,
-    fill: "#aabbcc",
+    fill: "#3B82F6",
     objectId: uuidv4(),
   } as CustomFabricObject<fabric.Rect>)
 
@@ -27,7 +27,7 @@ export const createTriangle = (pointer: PointerEvent) => {
     top: pointer.y,
     width: 100,
     height: 100,
-    fill: "#aabbcc",
+    fill: "#3B82F6",
     objectId: uuidv4(),
   } as CustomFabricObject<fabric.Triangle>)
 }
@@ -37,7 +37,7 @@ export const createCircle = (pointer: PointerEvent) => {
     left: pointer.x,
     top: pointer.y,
     radius: 100,
-    fill: "#aabbcc",
+    fill: "#3B82F6",
     objectId: uuidv4(),
   } as any)
 }
@@ -46,7 +46,7 @@ export const createLine = (pointer: PointerEvent) => {
   return new fabric.Line(
     [pointer.x, pointer.y, pointer.x + 100, pointer.y + 100],
     {
-      stroke: "#aabbcc",
+      stroke: "#3B82F6",
       strokeWidth: 2,
       objectId: uuidv4(),
     } as CustomFabricObject<fabric.Line>
@@ -57,8 +57,8 @@ export const createText = (pointer: PointerEvent, text: string) => {
   return new fabric.IText(text, {
     left: pointer.x,
     top: pointer.y,
-    fill: "#aabbcc",
-    fontFamily: "Helvetica",
+    fill: "#fff",
+    fontFamily: "Rubik",
     fontSize: 36,
     fontWeight: "400",
     objectId: uuidv4(),
@@ -83,7 +83,7 @@ export const createSpecificShape = (
       return createLine(pointer)
 
     case "text":
-      return createText(pointer, "Tap to Type")
+      return createText(pointer, "Write something here...")
 
     default:
       return null

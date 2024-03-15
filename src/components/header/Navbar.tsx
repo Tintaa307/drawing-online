@@ -4,10 +4,11 @@ import React from "react"
 import { IconClick } from "@tabler/icons-react"
 import { Button } from "../ui/button"
 import Item from "./Item"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 
 const Navbar = () => {
   const pathname = usePathname()
+  const router = useRouter()
   const navItems = [
     {
       title: "About",
@@ -35,7 +36,10 @@ const Navbar = () => {
       {pathname === "/dashboard" ? null : (
         <header className="fixed top-0 left-0 w-full h-[72px] flex items-center justify-center border-b-[1px] border-b-primary/20">
           <nav className="w-[85%] h-full flex items-center justify-evenly">
-            <div className="w-1/4 flex items-center justify-start flex-row gap-2 cursor-pointer">
+            <div
+              onClick={() => router.push("/")}
+              className="w-1/4 flex items-center justify-start flex-row gap-2 cursor-pointer"
+            >
               <IconClick size={24} className="text-primary select-none" />
               <small className="text-white text-base font-medium select-none">
                 dw-on
@@ -49,8 +53,17 @@ const Navbar = () => {
               </ul>
             </div>
             <div className="w-1/4 h-full flex items-center justify-end flex-row gap-2">
-              <Button className="w-32 h-10 text-white">Sign in</Button>
-              <Button variant={"link"} className="w-32 h-10 text-primary">
+              <Button
+                onClick={() => router.push("/sign-in")}
+                className="w-32 h-10 text-white"
+              >
+                Sign in
+              </Button>
+              <Button
+                onClick={() => router.push("/sign-up")}
+                variant={"link"}
+                className="w-32 h-10 text-primary"
+              >
                 Sign up
               </Button>
             </div>
