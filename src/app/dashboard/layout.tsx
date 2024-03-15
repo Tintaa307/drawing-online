@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Rubik } from "next/font/google"
 import Toolbar from "@/components/toolbar/Toolbar"
-import { Room } from "../Room"
+import { Room } from "../../providers/Room"
 
 const rubik = Rubik({ subsets: ["latin"] })
 

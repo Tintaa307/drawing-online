@@ -7,7 +7,6 @@ import {
   handleCanvasMouseDown,
   handleCanvasMouseUp,
   handleCanvasObjectModified,
-  handleCanvasSelectionCreated,
   handleCanvaseMouseMove,
   handleResize,
   initializeFabric,
@@ -15,85 +14,7 @@ import {
 } from "@/lib/canvas"
 import Toolbar, { ToolItemsProps } from "@/components/toolbar/Toolbar"
 import { useMutation, useStorage } from "../../../liveblocks.config"
-import { defaultNavElement } from "@/constants"
 import { handleDelete } from "@/lib/key-events"
-
-// // draw and clean the canvas
-// useEffect(() => {
-//   const canvas = canvasRef.current
-//   const context = canvas?.getContext("2d")
-
-//   if (!canvas || !context) return
-
-//   if (toolSelected === "Clear all") {
-//     localStorage.removeItem("drawing")
-//     context.clearRect(0, 0, canvas.width, canvas.height)
-//   }
-
-//   const saveDrawing = () => {
-//     localStorage.setItem("drawing", canvas.toDataURL())
-//   }
-
-//   const restoreDrawing = () => {
-//     const img = new Image()
-//     img.onload = () => {
-//       context.drawImage(img, 0, 0)
-//     }
-//     img.src = localStorage.getItem("drawing") as string
-//   }
-
-//   if (localStorage.getItem("drawing")) {
-//     requestAnimationFrame(restoreDrawing)
-//   }
-
-//   if (toolSelected === "Pencil") {
-//     canvas.width = window.innerWidth
-//     canvas.height = window.innerHeight
-
-//     context.lineCap = "round"
-//     context.strokeStyle = "#303030"
-//     context.lineWidth = 4
-
-//     let prevX = 0
-//     let prevY = 0
-
-//     const startDrawing = (event: MouseEvent) => {
-//       setIsDrawing(true)
-//       const { clientX, clientY } = event
-//       prevX = clientX - canvas.offsetLeft
-//       prevY = clientY - canvas.offsetTop
-//       context.beginPath()
-//       context.moveTo(prevX, prevY)
-//     }
-
-//     const draw = (event: MouseEvent) => {
-//       if (!isDrawing) return
-//       const { clientX, clientY } = event
-//       const currentX = clientX - canvas.offsetLeft
-//       const currentY = clientY - canvas.offsetTop
-//       context.lineTo(currentX, currentY)
-//       context.stroke()
-//       prevX = currentX
-//       prevY = currentY
-//     }
-
-//     const stopDrawing = () => {
-//       setIsDrawing(false)
-//       saveDrawing()
-//     }
-
-//     canvas.addEventListener("mousedown", startDrawing)
-//     canvas.addEventListener("mousemove", draw)
-//     canvas.addEventListener("mouseup", stopDrawing)
-
-//     return () => {
-//       canvas.removeEventListener("mousedown", startDrawing)
-//       canvas.removeEventListener("mousemove", draw)
-//       canvas.removeEventListener("mouseup", stopDrawing)
-//     }
-//   }
-// }, [isDrawing, toolSelected])
-// const [isDrawing, setIsDrawing] = useState(false)
 
 const Dashboard = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
