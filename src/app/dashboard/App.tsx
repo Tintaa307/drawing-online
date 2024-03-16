@@ -216,7 +216,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const keyDownHandler = (e: KeyboardEvent) => {
-      if (e.key === "Backspace" || e.key === "Delete") {
+      if (e.key === "Delete") {
         handleDelete(fabricRef.current as any, deleteShapeFromStorage)
         setActiveElement("select")
         setActiveTool("Select")
