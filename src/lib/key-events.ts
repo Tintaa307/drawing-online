@@ -41,7 +41,7 @@ export const handlePaste = (
                 left: enlivenedObj.left || 0 + 20,
                 top: enlivenedObj.top || 0 + 20,
                 objectId: uuidv4(),
-                fill: "#3B82F6",
+                fill: "#141414",
               } as CustomFabricObject<any>)
 
               canvas.add(enlivenedObj)

@@ -7,6 +7,8 @@ import {
   handleCanvasMouseDown,
   handleCanvasMouseUp,
   handleCanvasObjectModified,
+  handleCanvasSelectionCreated,
+  handleCanvasZoom,
   handleCanvaseMouseMove,
   handleResize,
   initializeFabric,
@@ -20,7 +22,10 @@ import {
   useUndo,
 } from "../../../liveblocks.config"
 import { handleDelete, handleKeyDown } from "@/lib/key-events"
-import { handleImageUpload } from "@/lib/shapes"
+import { handleImageUpload, modifyShape, updateShapesColor } from "@/lib/shapes"
+import { useTheme } from "next-themes"
+import { useRouter } from "next/navigation"
+import { Attributes } from "@/types/type"
 
 const Dashboard = () => {
   const undo = useUndo()
@@ -34,6 +39,17 @@ const Dashboard = () => {
   const activeObjectRef = useRef<fabric.Object | null>(null)
   const [activeTool, setActiveTool] = useState("Select")
   const imageInputRef = useRef<HTMLInputElement | null>(null)
+  const { theme, setTheme } = useTheme()
+  const isEditingRef = useRef(false)
+  const [elementAttributes, setElementAttributes] = useState<Attributes>({
+    width: "",
+    height: "",
+    fill: "",
+    stroke: theme === "light" ? "#141414" : "#f2f2f2",
+    fontFamily: "",
+    fontSize: "",
+    fontWeight: "",
+  })
 
   const canvasObjects = useStorage((root) => root.canvasObjects)
 
@@ -53,6 +69,8 @@ const Dashboard = () => {
   useEffect(() => {
     const canvas = initializeFabric({ canvasRef, fabricRef })
 
+    if (!theme) return
+
     canvas.on("mouse:down", (options) => {
       handleCanvasMouseDown({
         options,
@@ -60,6 +78,7 @@ const Dashboard = () => {
         selectedShapeRef,
         isDrawing,
         shapeRef,
+        theme,
       })
     })
 
@@ -108,10 +127,44 @@ const Dashboard = () => {
       handleResize({ canvas })
     })
 
+    canvas.on("mouse:wheel", (options) => {
+      handleCanvasZoom({ options, canvas })
+    })
+
+    canvas.on("selection:created", (options) => {
+      handleCanvasSelectionCreated({
+        options,
+        isEditingRef,
+        setElementAttributes,
+      })
+    })
+
     return () => {
       canvas.dispose()
     }
   }, [])
+
+  useEffect(() => {
+    if (fabricRef.current && theme) {
+      updateShapesColor({
+        canvas: fabricRef.current,
+        theme,
+        syncShapeInStorage,
+      })
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.altKey && e.key === "d") {
+        setTheme(theme === "light" ? "dark" : "light")
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [theme, localStorage.getItem("theme")])
 
   useEffect(() => {
     selectedShapeRef.current = activeElement
@@ -209,6 +262,12 @@ const Dashboard = () => {
             syncShapeInStorage,
           })
         }}
+        elementAttributes={elementAttributes}
+        setElementAttributes={setElementAttributes}
+        fabricRef={fabricRef}
+        isEditingRef={isEditingRef}
+        activeObjectRef={activeObjectRef}
+        syncShapeInStorage={syncShapeInStorage}
       />
       <Live canvasRef={canvasRef} toolSelected={activeElement} />
     </main>

@@ -12,7 +12,11 @@ const variants = {
 }
 
 const Path = (props: any) => (
-  <motion.path fill="none" stroke="#000" {...props} />
+  <motion.path
+    fill="none"
+    className={"stroke-black dark:stroke-white"}
+    {...props}
+  />
 )
 
 export const BarsIcon = ({
@@ -25,13 +29,13 @@ export const BarsIcon = ({
   return (
     <motion.svg
       xmlns="http://www.w3.org/2000/svg"
-      className="icon icon-tabler icon-tabler-menu text-black cursor-pointer"
+      className="icon icon-tabler icon-tabler-menu text-black cursor-pointer dark:text-white"
       width="24"
       onClick={() => setIsOpen(!isOpen)}
       height="24"
       viewBox="0 0 24 24"
       strokeWidth="1.5"
-      stroke="#000"
+      stroke="currentColor"
       fill="none"
       strokeLinecap="round"
       strokeLinejoin="round"

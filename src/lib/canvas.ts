@@ -44,6 +44,7 @@ export const handleCanvasMouseDown = ({
   selectedShapeRef,
   isDrawing,
   shapeRef,
+  theme,
 }: CanvasMouseDown) => {
   // get pointer coordinates
   const pointer = canvas.getPointer(options.e)
@@ -91,7 +92,8 @@ export const handleCanvasMouseDown = ({
     // create custom fabric object/shape and set it to shapeRef
     shapeRef.current = createSpecificShape(
       selectedShapeRef.current,
-      pointer as any
+      pointer as any,
+      theme
     )
 
     // if shapeRef is not null, add it to canvas

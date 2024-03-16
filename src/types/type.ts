@@ -122,6 +122,7 @@ export type CanvasMouseDown = {
   selectedShapeRef: any
   isDrawing: React.MutableRefObject<boolean>
   shapeRef: React.MutableRefObject<fabric.Object | null>
+  theme: string
 }
 
 export type CanvasMouseMove = {
@@ -181,4 +182,8 @@ export type CursorChatProps = {
       message: string
     }>
   ) => void
+}
+
+export interface SignInProps {
+  [key: string]: string
 }

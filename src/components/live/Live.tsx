@@ -73,7 +73,7 @@ const Live = ({ canvasRef, toolSelected }: Props) => {
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       onPointerDown={handlePointerDown}
-      className="relative w-full h-full"
+      className="relative w-full h-full bg-white dark:bg-[#13131A]"
     >
       <canvas ref={canvasRef} />
       {cursor && (

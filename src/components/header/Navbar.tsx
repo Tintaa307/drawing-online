@@ -1,10 +1,11 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 import { IconClick } from "@tabler/icons-react"
 import { Button } from "../ui/button"
 import Item from "./Item"
 import { usePathname, useRouter } from "next/navigation"
+import Avatar from "../users/Avatar"
 
 const Navbar = () => {
   const pathname = usePathname()
@@ -31,6 +32,7 @@ const Navbar = () => {
       path: "/contact",
     },
   ]
+
   return (
     <>
       {pathname === "/dashboard" ? null : (
@@ -53,19 +55,9 @@ const Navbar = () => {
               </ul>
             </div>
             <div className="w-1/4 h-full flex items-center justify-end flex-row gap-2">
-              <Button
-                onClick={() => router.push("/sign-in")}
-                className="w-32 h-10 text-white"
-              >
-                Sign in
-              </Button>
-              <Button
-                onClick={() => router.push("/sign-up")}
-                variant={"link"}
-                className="w-32 h-10 text-primary"
-              >
-                Sign up
-              </Button>
+              <div className="flex flex-row gap-12">
+                <Avatar name={"you"} otherStyles="cursor-pointer" />
+              </div>
             </div>
           </nav>
         </header>

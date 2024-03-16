@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Rubik } from "next/font/google"
-import Toolbar from "@/components/toolbar/Toolbar"
 import { Room } from "../../providers/Room"
+import { ThemeProvider } from "@/providers/ThemeProvider"
 
 const rubik = Rubik({ subsets: ["latin"] })
 
@@ -14,5 +14,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return <Room>{children}</Room>
+  return (
+    <Room>
+      <ThemeProvider defaultTheme="light" attribute="class">
+        {children}
+      </ThemeProvider>
+    </Room>
+  )
 }

@@ -1,10 +1,7 @@
 import type { Metadata } from "next"
 import { Rubik } from "next/font/google"
 import "./globals.css"
-import { ThemeProvider } from "@/providers/ThemeProvider"
-import db from "@/lib/supabase/db"
 import Navbar from "@/components/header/Navbar"
-import { RoomProvider } from "../../liveblocks.config"
 
 const rubik = Rubik({ subsets: ["latin"] })
 
@@ -16,19 +13,16 @@ export const metadata: Metadata = {
     "drawing, online, real-time, collaborative, diagrams, shapes, drawings, browser, excalidraw, paint, intuitive, accessible, creativity, collaboration, visual, projects, effortlessly",
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  console.log(db)
   return (
     <html lang="en">
       <body className={rubik.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          <Navbar />
-          {children}
-        </ThemeProvider>
+        <Navbar />
+        {children}
       </body>
     </html>
   )
