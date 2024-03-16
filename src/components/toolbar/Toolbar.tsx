@@ -73,6 +73,7 @@ type ToolbarProps = {
   fabricRef: React.MutableRefObject<fabric.Canvas | null>
   activeObjectRef: React.MutableRefObject<fabric.Object | null>
   syncShapeInStorage: any
+  setDialogOpen: (open: boolean) => void
 }
 
 const Toolbar = ({
@@ -87,6 +88,7 @@ const Toolbar = ({
   isEditingRef,
   fabricRef,
   syncShapeInStorage,
+  setDialogOpen,
 }: ToolbarProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isLocked, setIsLocked] = useState(false)
@@ -429,6 +431,9 @@ const Toolbar = ({
                           item.title === "Light mode"
                         ) {
                           setTheme(theme === "light" ? "dark" : "light")
+                        }
+                        if (item.title === "Open") {
+                          setDialogOpen(true)
                         }
                       }}
                       className={cn(

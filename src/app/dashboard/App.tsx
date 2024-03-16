@@ -24,7 +24,9 @@ import {
 import { handleDelete, handleKeyDown } from "@/lib/key-events"
 import { handleImageUpload, updateShapesColor } from "@/lib/shapes"
 import { useTheme } from "next-themes"
+import { createPortal } from "react-dom"
 import { Attributes } from "@/types/type"
+import Dialog from "@/components/dialog/Dialog"
 
 const Dashboard = () => {
   const undo = useUndo()
@@ -39,6 +41,7 @@ const Dashboard = () => {
   const [activeTool, setActiveTool] = useState("Select")
   const imageInputRef = useRef<HTMLInputElement | null>(null)
   const { theme, setTheme } = useTheme()
+  const [dialogOpen, setDialogOpen] = useState(false)
   const isEditingRef = useRef(false)
   const [elementAttributes, setElementAttributes] = useState<Attributes>({
     width: "",
@@ -156,6 +159,10 @@ const Dashboard = () => {
       if (e.ctrlKey && e.altKey && e.key === "d") {
         setTheme(theme === "light" ? "dark" : "light")
       }
+
+      if (e.ctrlKey && e.key === "o") {
+        setDialogOpen(true)
+      }
     }
 
     window.addEventListener("keydown", handleKeyDown)
@@ -267,7 +274,11 @@ const Dashboard = () => {
         isEditingRef={isEditingRef}
         activeObjectRef={activeObjectRef}
         syncShapeInStorage={syncShapeInStorage}
+        setDialogOpen={setDialogOpen}
       />
+      {dialogOpen && (
+        <Dialog setDialogOpen={setDialogOpen} dialogOpen={dialogOpen} />
+      )}
       <Live canvasRef={canvasRef} toolSelected={activeElement} />
     </main>
   )
