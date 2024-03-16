@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Room } from "../Room"
+import { Room } from "./Room"
 import { ThemeProvider } from "@/providers/ThemeProvider"
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <Room>
-      <ThemeProvider defaultTheme="light" attribute="class">
+      <ThemeProvider defaultTheme="dark" attribute="class">
         {children}
       </ThemeProvider>
     </Room>
