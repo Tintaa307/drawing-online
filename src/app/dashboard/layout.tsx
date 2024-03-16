@@ -1,9 +1,6 @@
 import type { Metadata } from "next"
-import { Rubik } from "next/font/google"
-import { Room } from "../../providers/Room"
+import { Room } from "../Room"
 import { ThemeProvider } from "@/providers/ThemeProvider"
-
-const rubik = Rubik({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Draw | Dashboard",

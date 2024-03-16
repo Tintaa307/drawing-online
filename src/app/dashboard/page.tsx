@@ -24,7 +24,6 @@ import {
 import { handleDelete, handleKeyDown } from "@/lib/key-events"
 import { handleImageUpload, modifyShape, updateShapesColor } from "@/lib/shapes"
 import { useTheme } from "next-themes"
-import { useRouter } from "next/navigation"
 import { Attributes } from "@/types/type"
 
 const Dashboard = () => {
