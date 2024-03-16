@@ -3,6 +3,7 @@ import LiveCursors from "./cursor/LiveCursors"
 import { useMyPresence, useOthers } from "../../../liveblocks.config"
 import CursorChat from "./cursor/CursorChat"
 import { CursorMode, CursorState } from "@/types/type"
+import { motion } from "framer-motion"
 
 type Props = {
   canvasRef: React.RefObject<HTMLCanvasElement> | null

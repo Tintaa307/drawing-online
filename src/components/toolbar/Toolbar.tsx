@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { BarsIcon } from "../icons/Bars"
 import {
   IconLockOpen,
@@ -24,10 +24,11 @@ import {
   IconDownload,
   IconLocationPlus,
   IconBrandGithub,
-  IconBrandX,
   IconWorldLatitude,
   IconMoon,
   IconSun,
+  IconBrandLinkedin,
+  IconRestore,
 } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
@@ -54,6 +55,7 @@ import {
 import { useTheme } from "next-themes"
 import { Attributes } from "@/types/type"
 import { modifyShape } from "@/lib/shapes"
+import Link from "next/link"
 
 export type ToolItemsProps = {
   title: string
@@ -337,7 +339,7 @@ const Toolbar = ({
     {
       title: "Clean the board",
       icon: (
-        <IconTrash
+        <IconRestore
           className="text-black ml-2 dark:text-white"
           size={16}
           strokeWidth={2}
@@ -350,31 +352,43 @@ const Toolbar = ({
     {
       title: "Github",
       icon: (
-        <IconBrandGithub
-          className="text-black ml-2 dark:text-white"
-          size={16}
-          strokeWidth={1.5}
-        />
+        <Link
+          href={"https://github.com/Tintaa307/drawing-online"}
+          target="_blank"
+        >
+          <IconBrandGithub
+            className="text-black ml-2 dark:text-white"
+            size={16}
+            strokeWidth={1.5}
+          />
+        </Link>
       ),
     },
     {
-      title: "Twitter",
+      title: "Linkedin",
       icon: (
-        <IconBrandX
-          className="text-black ml-2 dark:text-white"
-          size={16}
-          strokeWidth={1.5}
-        />
+        <Link
+          href={"https://www.linkedin.com/in/valentin-gonzalez-6a1805276/"}
+          target="_blank"
+        >
+          <IconBrandLinkedin
+            className="text-black ml-2 dark:text-white"
+            size={16}
+            strokeWidth={1.5}
+          />
+        </Link>
       ),
     },
     {
       title: "My portfolio",
       icon: (
-        <IconWorldLatitude
-          className="text-black ml-2 dark:text-white"
-          size={16}
-          strokeWidth={1.5}
-        />
+        <Link href={"https://valentin-portfolio.vercel.app"} target="_blank">
+          <IconWorldLatitude
+            className="text-black ml-2 dark:text-white"
+            size={16}
+            strokeWidth={1.5}
+          />
+        </Link>
       ),
     },
     {
@@ -410,6 +424,30 @@ const Toolbar = ({
     }
   }
 
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (e.button === 1 && fabricRef.current) {
+        setActiveTool("Grab")
+        fabricRef.current.defaultCursor = "grab"
+      }
+    }
+
+    const handleMouseUp = (e: MouseEvent) => {
+      if (e.button === 1 && fabricRef.current) {
+        setActiveTool("Select")
+        fabricRef.current.defaultCursor = "default"
+      }
+    }
+
+    window.addEventListener("mousedown", handleClick)
+    window.addEventListener("mouseup", handleMouseUp)
+
+    return () => {
+      window.removeEventListener("mousedown", handleClick)
+      window.removeEventListener("mouseup", handleMouseUp)
+    }
+  }, [])
+
   return (
     <header className="relative w-full h-20 flex items-center justify-evenly z-40 bg-white dark:bg-[#13131A]">
       <div className="w-1/4 h-full flex items-center justify-start">
@@ -434,6 +472,12 @@ const Toolbar = ({
                         }
                         if (item.title === "Open") {
                           setDialogOpen(true)
+                        }
+                        if (item.title === "Clean the board") {
+                          handleActive({
+                            title: "Reset",
+                            value: "reset",
+                          })
                         }
                       }}
                       className={cn(

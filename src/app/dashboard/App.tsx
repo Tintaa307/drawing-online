@@ -7,6 +7,8 @@ import {
   handleCanvasMouseDown,
   handleCanvasMouseUp,
   handleCanvasObjectModified,
+  handleCanvasObjectMoving,
+  handleCanvasObjectScaling,
   handleCanvasSelectionCreated,
   handleCanvasZoom,
   handleCanvaseMouseMove,
@@ -126,7 +128,7 @@ const Dashboard = () => {
     })
 
     window.addEventListener("resize", () => {
-      handleResize({ canvas })
+      handleResize({ canvas: fabricRef.current })
     })
 
     canvas.on("mouse:wheel", (options) => {
@@ -138,6 +140,12 @@ const Dashboard = () => {
         options,
         isEditingRef,
         setElementAttributes,
+      })
+    })
+
+    canvas?.on("object:moving", (options) => {
+      handleCanvasObjectMoving({
+        options,
       })
     })
 
