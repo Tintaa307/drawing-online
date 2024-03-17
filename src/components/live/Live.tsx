@@ -8,9 +8,10 @@ import { motion } from "framer-motion"
 type Props = {
   canvasRef: React.RefObject<HTMLCanvasElement> | null
   toolSelected: string
+  boardBg: string
 }
 
-const Live = ({ canvasRef, toolSelected }: Props) => {
+const Live = ({ canvasRef, toolSelected, boardBg }: Props) => {
   const others = useOthers()
   const [{ cursor }, updateMyPresence] = useMyPresence() as any
   const [cursorState, setCursorState] = useState<CursorState>({
@@ -41,7 +42,7 @@ const Live = ({ canvasRef, toolSelected }: Props) => {
 
   useEffect(() => {
     const onKeyUp = (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
+      if (e.key === "Enter" && e.ctrlKey) {
         setCursorState({
           mode: CursorMode.Chat,
           previousMessage: null,
@@ -76,7 +77,7 @@ const Live = ({ canvasRef, toolSelected }: Props) => {
       onPointerDown={handlePointerDown}
       className="relative w-full h-full bg-white dark:bg-[#13131A]"
     >
-      <canvas ref={canvasRef} />
+      <canvas ref={canvasRef} style={{ backgroundColor: boardBg }} />
       {cursor && (
         <CursorChat
           cursor={cursor}

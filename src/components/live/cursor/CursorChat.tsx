@@ -16,8 +16,8 @@ const CursorChat = ({
       message: e.currentTarget.value,
     })
   }
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && e.ctrlKey) {
       setCursorState({
         mode: CursorMode.Chat,
         // @ts-ignore

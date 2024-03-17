@@ -29,6 +29,8 @@ import {
   IconSun,
   IconBrandLinkedin,
   IconRestore,
+  IconPolygon,
+  IconVectorSpline,
 } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
@@ -76,6 +78,8 @@ type ToolbarProps = {
   activeObjectRef: React.MutableRefObject<fabric.Object | null>
   syncShapeInStorage: any
   setDialogOpen: (open: boolean) => void
+  setBoardBg: React.Dispatch<React.SetStateAction<string>>
+  boardBg: string
 }
 
 const Toolbar = ({
@@ -91,6 +95,8 @@ const Toolbar = ({
   fabricRef,
   syncShapeInStorage,
   setDialogOpen,
+  setBoardBg,
+  boardBg,
 }: ToolbarProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isLocked, setIsLocked] = useState(false)
@@ -275,6 +281,30 @@ const Toolbar = ({
   ]
 
   const fillColors = ["#fe8a8a", "#fbe48f", "#b2fb8f", "#6257f9", "#fc79ff"]
+  const moreTools = [
+    {
+      title: "Polygon",
+      icon: (
+        <IconPolygon
+          className="text-black dark:text-white"
+          size={16}
+          strokeWidth={1.5}
+        />
+      ),
+      value: "polygon",
+    },
+    {
+      title: "Polyline",
+      icon: (
+        <IconVectorSpline
+          className="text-black dark:text-white"
+          size={16}
+          strokeWidth={1.5}
+        />
+      ),
+      value: "polyline",
+    },
+  ] as ToolItemsProps[]
 
   const handleChangeShapeColor = (property: string, value: string) => {
     if (!isEditingRef.current) isEditingRef.current = true
@@ -416,6 +446,7 @@ const Toolbar = ({
 
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setColor(event.target.value)
+    setBoardBg(event.target.value)
 
     if (event.target.name === "fill") {
       handleChangeShapeColor("fill", event.target.value)
@@ -449,7 +480,13 @@ const Toolbar = ({
   }, [])
 
   return (
-    <header className="relative w-full h-20 flex items-center justify-evenly z-40 bg-white dark:bg-[#13131A]">
+    <header
+      className="relative w-full h-20 flex items-center justify-evenly z-40 bg-white dark:bg-[#13131A]"
+      style={{ backgroundColor: boardBg }}
+    >
+      <small className="absolute top-20 text-black/50 text-xs font-light tracking-wider dark:text-white/50">
+        Drawing-online by Valentin Gonzalez
+      </small>
       <div className="w-1/4 h-full flex items-center justify-start">
         <div className="w-10 h-10 rounded-xl bg-white border-[1px] border-black/10 shadow-lg flex items-center justify-center mx-8 cursor-pointer hover:bg-white/90 transition-colors duration-150 dark:bg-[#090909] dark:border-white/10 dark:hover:bg-[#070707]">
           <DropdownMenu>
@@ -512,6 +549,9 @@ const Toolbar = ({
                 {colors.map((item, index) => (
                   <div
                     key={index}
+                    onClick={() => {
+                      setBoardBg(item)
+                    }}
                     className="w-[35px] h-[35px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10"
                     style={{ backgroundColor: item }}
                   />
@@ -525,7 +565,7 @@ const Toolbar = ({
                     />
                   </PopoverTrigger>
                   <PopoverContent className="py-2 px-1 bg-white border-[1px] border-black/20 flex items-center justify-center flex-col gap-1 dark:bg-black dark:border-white/20">
-                    <h6 className="text-black/80 text-base">
+                    <h6 className="text-black/80 text-base dark:text-white">
                       Hexadecimal code
                     </h6>
                     <input
@@ -559,7 +599,7 @@ const Toolbar = ({
                     />
                   </PopoverTrigger>
                   <PopoverContent className="py-2 px-1 bg-white border-[1px] border-black/20 flex items-center justify-center flex-col gap-1 dark:bg-black dark:border-white/20">
-                    <h6 className="text-black/80 text-base">
+                    <h6 className="text-black/80 text-base dark:text-white">
                       Hexadecimal code
                     </h6>
                     <input
@@ -594,7 +634,7 @@ const Toolbar = ({
                     />
                   </PopoverTrigger>
                   <PopoverContent className="py-2 px-1 bg-white border-[1px] border-black/20 flex items-center justify-center flex-col gap-1 dark:bg-black dark:border-white/20">
-                    <h6 className="text-black/80 text-base">
+                    <h6 className="text-black/80 text-base dark:text-white">
                       Hexadecimal code
                     </h6>
                     <input
@@ -645,8 +685,26 @@ const Toolbar = ({
                     onChange={handleImageUpload}
                   />
                 </TooltipTrigger>
-                <TooltipContent className="dark:bg-[#070707] dark:text-white dark:border-white/10">
-                  <p>{item.title}</p>
+                <TooltipContent className="bg-white text-black dark:bg-[#070707] dark:text-white dark:border-white/10 mt-1">
+                  {item.title === "More tools" ? (
+                    <ul className="top-11 w-max h-max flex items-center justify-start flex-col gap-2 py-2">
+                      {moreTools.map((item, index) => (
+                        <li
+                          onClick={() => {
+                            setActiveTool(item.title)
+                            handleActive(item)
+                          }}
+                          className="w-[140px] py-2.5 px-2 hover:bg-black/10 dark:hover:bg-white/10 rounded-md flex flex-row items-center gap-3 cursor-pointer"
+                          key={index}
+                        >
+                          {item.icon}
+                          <span>{item.title}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>{item.title}</p>
+                  )}
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

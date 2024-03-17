@@ -8,7 +8,6 @@ import {
   handleCanvasMouseUp,
   handleCanvasObjectModified,
   handleCanvasObjectMoving,
-  handleCanvasObjectScaling,
   handleCanvasSelectionCreated,
   handleCanvasZoom,
   handleCanvaseMouseMove,
@@ -26,7 +25,6 @@ import {
 import { handleDelete, handleKeyDown } from "@/lib/key-events"
 import { handleImageUpload, updateShapesColor } from "@/lib/shapes"
 import { useTheme } from "next-themes"
-import { createPortal } from "react-dom"
 import { Attributes } from "@/types/type"
 import Dialog from "@/components/dialog/Dialog"
 
@@ -44,6 +42,7 @@ const Dashboard = () => {
   const imageInputRef = useRef<HTMLInputElement | null>(null)
   const { theme, setTheme } = useTheme()
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [boardBg, setBoardBg] = useState<string>("")
   const isEditingRef = useRef(false)
   const [elementAttributes, setElementAttributes] = useState<Attributes>({
     width: "",
@@ -283,11 +282,17 @@ const Dashboard = () => {
         activeObjectRef={activeObjectRef}
         syncShapeInStorage={syncShapeInStorage}
         setDialogOpen={setDialogOpen}
+        setBoardBg={setBoardBg}
+        boardBg={boardBg}
       />
       {dialogOpen && (
         <Dialog setDialogOpen={setDialogOpen} dialogOpen={dialogOpen} />
       )}
-      <Live canvasRef={canvasRef} toolSelected={activeElement} />
+      <Live
+        canvasRef={canvasRef}
+        toolSelected={activeElement}
+        boardBg={boardBg}
+      />
     </main>
   )
 }
