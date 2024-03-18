@@ -766,7 +766,7 @@ const Toolbar = ({
               variant={"destructive"}
               className="gap-2"
             >
-              Stop sharing
+              Stop share
               <IconSquare className="text-white" size={18} />
             </Button>
           )}
@@ -794,10 +794,10 @@ const Toolbar = ({
                       id="link"
                       defaultValue={
                         process.env.NODE_ENV === "development"
-                          ? `localhost:3000/${pathname}?my-room=${searchParams.get(
+                          ? `localhost:3000${pathname}?my-room=${searchParams.get(
                               "my-room"
                             )}`
-                          : `https://drawing-online.vercel.app/${pathname}?my-room=${searchParams.get(
+                          : `https://drawing-online.vercel.app${pathname}?my-room=${searchParams.get(
                               "my-room"
                             )}`
                       }
@@ -811,12 +811,12 @@ const Toolbar = ({
                         onClick={() => {
                           process.env.NODE_ENV === "development"
                             ? navigator.clipboard.writeText(
-                                `localhost:3000/${pathname}?my-room=${searchParams.get(
+                                `localhost:3000${pathname}?my-room=${searchParams.get(
                                   "my-room"
                                 )}`
                               )
                             : navigator.clipboard.writeText(
-                                `https://drawing-online.vercel.app/${pathname}?my-room=${searchParams.get(
+                                `https://drawing-online.vercel.app${pathname}?my-room=${searchParams.get(
                                   "my-room"
                                 )}`
                               )

@@ -43,6 +43,7 @@ const Dashboard = ({ params }: { params: { id: string } }) => {
   const { theme, setTheme } = useTheme()
   const [dialogOpen, setDialogOpen] = useState(false)
   const [boardBg, setBoardBg] = useState<string>("")
+  const [objsSelected, setObjsSelected] = useState<any>()
   const isEditingRef = useRef(false)
   const [elementAttributes, setElementAttributes] = useState<Attributes>({
     width: "",
@@ -115,8 +116,9 @@ const Dashboard = ({ params }: { params: { id: string } }) => {
       })
     })
 
-    canvas.on("object:selected", (options) => {
-      console.log("selected")
+    canvas.on("selection:created", (options) => {
+      console.log(options)
+      setObjsSelected(options.selected)
     })
 
     window.addEventListener("keydown", (e) => {
