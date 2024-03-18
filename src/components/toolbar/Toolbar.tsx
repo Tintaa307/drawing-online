@@ -759,7 +759,6 @@ const Toolbar = ({
                 const newRoomId = v4()
                 const newUrl = `${pathname}?my-room=${newRoomId}`
                 router.push(newUrl)
-                router.refresh()
               }}
               variant={"destructive"}
               className="gap-2"
@@ -790,9 +789,15 @@ const Toolbar = ({
                     </Label>
                     <Input
                       id="link"
-                      defaultValue={`localhost:3000/dashboard?my-room=${searchParams.get(
-                        "my-room"
-                      )}`}
+                      defaultValue={
+                        process.env.NODE_ENV === "development"
+                          ? `localhost:3000/${pathname}?my-room=${searchParams.get(
+                              "my-room"
+                            )}`
+                          : `https://drawing-online.vercel.app/${pathname}?my-room=${searchParams.get(
+                              "my-room"
+                            )}`
+                      }
                       readOnly
                     />
                   </div>
@@ -801,11 +806,17 @@ const Toolbar = ({
                     {!isCopied ? (
                       <IconCopy
                         onClick={() => {
-                          navigator.clipboard.writeText(
-                            `localhost:3000/dashboard?my-room=${searchParams.get(
-                              "my-room"
-                            )}`
-                          )
+                          process.env.NODE_ENV === "development"
+                            ? navigator.clipboard.writeText(
+                                `localhost:3000/${pathname}?my-room=${searchParams.get(
+                                  "my-room"
+                                )}`
+                              )
+                            : navigator.clipboard.writeText(
+                                `https://drawing-online.vercel.app/${pathname}?my-room=${searchParams.get(
+                                  "my-room"
+                                )}`
+                              )
                           setIsCopied(true)
                           setTimeout(() => {
                             setIsCopied(false)
