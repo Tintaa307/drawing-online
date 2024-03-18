@@ -6,9 +6,7 @@ import { v4 as UUIDV4 } from "uuid"
 // million-ignore
 
 const Landing = () => {
-  const createUniqueRoom = () => {
-    return UUIDV4()
-  }
+  const roomId = UUIDV4()
   return (
     <main className="w-full h-screen bg-hero-pattern bg-no-repeat bg-center">
       <div className="w-full h-full flex items-center justify-center flex-col">
@@ -30,7 +28,7 @@ const Landing = () => {
             collaborating on an existing one.
           </p>
           <Link
-            href={`/dashboard/?my-room=${createUniqueRoom()}`}
+            href={`/dashboard/?my-room=${roomId}`}
             className="w-44 px-2 h-12 text-white flex items-center justify-center flex-row gap-2 bg-primary rounded-lg text-sm"
           >
             Go to dashboard <IconClick />
