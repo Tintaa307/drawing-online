@@ -1,12 +1,32 @@
+"use client"
+
 import { IconClick, IconWand } from "@tabler/icons-react"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import Link from "next/link"
-import { v4 as UUIDV4 } from "uuid"
+import axios from "axios"
+import { v4 } from "uuid"
 
 // million-ignore
 
 const Landing = () => {
-  const roomId = UUIDV4()
+  const [roomId, setRoomId] = useState("")
+  const sendGenerateRoomId = async () => {
+    try {
+      await axios
+        .post("/api/room", {
+          roomId: v4(),
+        })
+        .then((res) => {
+          setRoomId(res.data.roomId)
+        })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    sendGenerateRoomId()
+  }, [])
   return (
     <main className="w-full h-screen bg-hero-pattern bg-no-repeat bg-center">
       <div className="w-full h-full flex items-center justify-center flex-col">
