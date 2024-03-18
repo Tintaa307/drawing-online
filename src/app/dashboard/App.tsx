@@ -115,6 +115,10 @@ const Dashboard = ({ params }: { params: { id: string } }) => {
       })
     })
 
+    canvas.on("object:selected", (options) => {
+      console.log("selected")
+    })
+
     window.addEventListener("keydown", (e) => {
       handleKeyDown({
         e,
