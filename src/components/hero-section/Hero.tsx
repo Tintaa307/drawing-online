@@ -1,6 +1,7 @@
 import { IconClick, IconWand } from "@tabler/icons-react"
 import React from "react"
 import Link from "next/link"
+import { v4 as UUIDV4 } from "uuid"
 
 // million-ignore
 
@@ -26,7 +27,7 @@ const Landing = () => {
             collaborating on an existing one.
           </p>
           <Link
-            href={"/dashboard"}
+            href={`/dashboard/?my-room=${UUIDV4()}`}
             className="w-44 px-2 h-12 text-white flex items-center justify-center flex-row gap-2 bg-primary rounded-lg text-sm"
           >
             Go to dashboard <IconClick />

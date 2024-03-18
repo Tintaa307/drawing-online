@@ -31,6 +31,9 @@ import {
   IconRestore,
   IconPolygon,
   IconVectorSpline,
+  IconCopy,
+  IconArrowRight,
+  IconCheck,
 } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
@@ -58,6 +61,21 @@ import { useTheme } from "next-themes"
 import { Attributes } from "@/types/type"
 import { modifyShape } from "@/lib/shapes"
 import Link from "next/link"
+import usePermission from "@/hooks/usePermission"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { useSearchParams, usePathname, useRouter } from "next/navigation"
+import { v4 } from "uuid"
 
 export type ToolItemsProps = {
   title: string
@@ -82,6 +100,13 @@ type ToolbarProps = {
   boardBg: string
 }
 
+type StorageProps = {
+  state: {
+    roomId: string
+    isSharing: boolean
+  }
+}
+
 const Toolbar = ({
   handleActive,
   activeTool,
@@ -102,6 +127,7 @@ const Toolbar = ({
   const [isLocked, setIsLocked] = useState(false)
   const [color, setColor] = useState("#393939")
   const { setTheme, theme } = useTheme()
+  const [isCopied, setIsCopied] = useState(false)
   const toolItems = [
     {
       title: isLocked ? "Unlock" : "Lock",
@@ -270,6 +296,18 @@ const Toolbar = ({
       value: "more",
     },
   ] as ToolItemsProps[]
+  const searchParams = useSearchParams()
+  const setMyRoom = usePermission((state: any) => state.setRoomId)
+  const isSharing = usePermission((state: any) => state.isSharing)
+  const setSharing = usePermission((state: any) => state.setSharing)
+  const pathname = usePathname()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (searchParams.get("my-room") && isSharing) {
+      setMyRoom(searchParams.get("my-room"))
+    }
+  }, [isSharing, searchParams.get("my-room")])
 
   const colors = ["#fff0cb", "#e1ffcb", "#cbffff", "#ffdfff"]
   const shapesColors = [
@@ -713,10 +751,108 @@ const Toolbar = ({
       </nav>
       <section className="w-1/4 h-full flex items-center justify-end">
         <div className="w-max h-full flex items-center justify-center mx-8 flex-row gap-8">
-          <Button className="w-max px-6 text-white bg-primary flex gap-2 select-none">
-            Share
-            <IconShare className="text-white" size={18} />
-          </Button>
+          {isSharing && (
+            <Button
+              onClick={() => {
+                setSharing(false)
+                setMyRoom("")
+                const newRoomId = v4()
+                const newUrl = `${pathname}?my-room=${newRoomId}`
+                router.push(newUrl)
+                router.refresh()
+              }}
+              variant={"destructive"}
+              className="gap-2"
+            >
+              Stop sharing
+              <IconSquare className="text-white" size={18} />
+            </Button>
+          )}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="w-max px-6 text-white bg-primary flex gap-2 select-none">
+                Share
+                <IconShare className="text-white" size={18} />
+              </Button>
+            </DialogTrigger>
+            {isSharing ? (
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Share link</DialogTitle>
+                  <DialogDescription>
+                    Anyone who has this link will be able to view this.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex items-center space-x-2">
+                  <div className="grid flex-1 gap-2">
+                    <Label htmlFor="link" className="sr-only">
+                      Link
+                    </Label>
+                    <Input
+                      id="link"
+                      defaultValue={`localhost:3000/dashboard?my-room=${searchParams.get(
+                        "my-room"
+                      )}`}
+                      readOnly
+                    />
+                  </div>
+                  <Button type="submit" size="sm" className="px-3">
+                    <span className="sr-only">Copy</span>
+                    {!isCopied ? (
+                      <IconCopy
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            `localhost:3000/dashboard?my-room=${searchParams.get(
+                              "my-room"
+                            )}`
+                          )
+                          setIsCopied(true)
+                          setTimeout(() => {
+                            setIsCopied(false)
+                          }, 2000)
+                        }}
+                        className="h-4 w-4 text-white"
+                      />
+                    ) : (
+                      <IconCheck size={20} className="h-4 w-4 text-white" />
+                    )}
+                  </Button>
+                </div>
+                <DialogFooter className="sm:justify-start">
+                  <DialogClose asChild>
+                    <Button type="button" variant="secondary">
+                      Close
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            ) : (
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="text-yellow-300 my-1">
+                    Important!
+                  </DialogTitle>
+                  <DialogDescription>
+                    Anyone who has this link will be able to view this. Do you
+                    want to continue?
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="w-full flex items-center justify-center space-x-2">
+                  <Button
+                    onClick={() => {
+                      setSharing(true)
+                    }}
+                    size="sm"
+                    className="w-1/2 h-11 text-white gap-2"
+                    variant={"default"}
+                  >
+                    Continue <IconArrowRight size={20} className="text-white" />
+                  </Button>
+                </div>
+              </DialogContent>
+            )}
+          </Dialog>
+
           <ActiveUsers />
         </div>
       </section>

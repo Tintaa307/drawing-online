@@ -36,7 +36,7 @@ const Navbar = () => {
   return (
     <>
       {pathname === "/dashboard" ? null : (
-        <header className="fixed top-0 left-0 w-full h-[72px] flex items-center justify-center border-b-[1px] border-b-primary/20">
+        <header className="fixed top-0 left-0 w-full h-[72px] flex items-center justify-center border-b-[1px] border-b-primary/20 z-10">
           <nav className="w-[85%] h-full flex items-center justify-evenly">
             <div
               onClick={() => router.push("/")}
