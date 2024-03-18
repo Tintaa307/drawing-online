@@ -98,86 +98,8 @@ type ToolbarProps = {
   setDialogOpen: (open: boolean) => void
   setBoardBg: React.Dispatch<React.SetStateAction<string>>
   boardBg: string
-}
-
-type StorageProps = {
-  state: {
-    roomId: string
-    isSharing: boolean
-  }
-}
-
-{
-  /* <DropdownMenuLabel className="w-[300px] flex flex-row gap-2 items-center font-normal text-black/80 text-sm my-0.5 mt-2 dark:text-white/80">
-Stroke color
-</DropdownMenuLabel>
-<DropdownMenuLabel className="w-[300px] h-full flex flex-row gap-3 items-center text-black/80 text-sm my-0.5 dark:text-white/80">
-{shapesColors.map((item, index) => (
-  <div
-    key={index}
-    onClick={() => handleChangeShapeColor("stroke", item)}
-    className="w-[20px] h-[20px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10"
-    style={{ backgroundColor: item }}
-  />
-))}
-<span className="w-[1px] h-[35px] bg-black/10 dark:bg-white/10" />
-<Popover>
-  <PopoverTrigger>
-    <div
-      style={{ backgroundColor: color }}
-      className="w-[20px] h-[20px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10"
-    />
-  </PopoverTrigger>
-  <PopoverContent className="py-2 px-1 bg-white border-[1px] border-black/20 flex items-center justify-center flex-col gap-1 dark:bg-black dark:border-white/20">
-    <h6 className="text-black/80 text-base dark:text-white">
-      Hexadecimal code
-    </h6>
-    <input
-      type="text"
-      name="stroke"
-      placeholder="#393939"
-      value={color}
-      onChange={handleColorChange}
-      className="w-[90%] h-8 bg-transparent px-2 border-[1px] border-black/20 text-black text-sm placeholder:text-black rounded-md dark:border-white/20 dark:text-white dark:placeholder:text-white"
-    />
-  </PopoverContent>
-</Popover>
-</DropdownMenuLabel>
-<DropdownMenuLabel className="w-[300px] flex flex-row gap-2 items-center font-normal text-black/80 text-sm my-0.5 mt-2 dark:text-white/80">
-Fill color
-</DropdownMenuLabel>
-<DropdownMenuLabel className="w-[300px] h-full flex flex-row gap-3 items-center text-black/80 text-sm my-0.5 dark:text-white/80">
-{fillColors.map((item, index) => (
-  <div
-    key={index}
-    onClick={() => handleChangeShapeColor("fill", item)}
-    className="w-[20px] h-[20px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10"
-    style={{ backgroundColor: item }}
-  />
-))}
-<span className="w-[1px] h-[35px] bg-black/10 dark:bg-white/10" />
-<Popover>
-  <PopoverTrigger>
-    <div
-      style={{ backgroundColor: color }}
-      className="w-[20px] h-[20px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10"
-    />
-  </PopoverTrigger>
-  <PopoverContent className="py-2 px-1 bg-white border-[1px] border-black/20 flex items-center justify-center flex-col gap-1 dark:bg-black dark:border-white/20">
-    <h6 className="text-black/80 text-base dark:text-white">
-      Hexadecimal code
-    </h6>
-    <input
-      type="text"
-      placeholder="#393939"
-      name="fill"
-      value={color}
-      onChange={handleColorChange}
-      className="w-[90%] h-8 bg-transparent px-2 border-[1px] border-black/20 text-black text-sm placeholder:text-black rounded-md dark:border-white/20 dark:text-white dark:placeholder:text-white"
-    />
-  </PopoverContent>
-</Popover>
-</DropdownMenuLabel> */
+  openEditor: boolean
+  setOpenEditor: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const Toolbar = ({
@@ -195,6 +117,8 @@ const Toolbar = ({
   setDialogOpen,
   setBoardBg,
   boardBg,
+  openEditor,
+  setOpenEditor,
 }: ToolbarProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isLocked, setIsLocked] = useState(false)
@@ -691,6 +615,89 @@ const Toolbar = ({
               </DropdownMenuLabel>
             </DropdownMenuContent>
           </DropdownMenu>
+          {openEditor && (
+            <DropdownMenu open={openEditor}>
+              <DropdownMenuContent
+                tabIndex={0}
+                onBlur={() => setOpenEditor(false)}
+                className="absolute w-max h-max flex flex-col dark:bg-[#090909] bg-white left-8 top-20 rounded-lg border-[1px] border-black/20 dark:border-white/20 px-3"
+              >
+                <DropdownMenuLabel
+                  tabIndex={0}
+                  className="w-[300px] flex flex-row gap-2 items-center font-normal text-black/80 text-sm my-0.5 mt-2 dark:text-white/80"
+                >
+                  Stroke color
+                </DropdownMenuLabel>
+                <DropdownMenuLabel className="w-[300px] h-full flex flex-row gap-3 items-center text-black/80 text-sm my-0.5 dark:text-white/80">
+                  {shapesColors.map((item, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handleChangeShapeColor("stroke", item)}
+                      className="w-[25px] h-[25px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10"
+                      style={{ backgroundColor: item }}
+                    />
+                  ))}
+                  <span className="w-[1px] h-[35px] bg-black/10 dark:bg-white/10" />
+                  <Popover>
+                    <PopoverTrigger>
+                      <div
+                        style={{ backgroundColor: color }}
+                        className="w-[25px] h-[25px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10"
+                      />
+                    </PopoverTrigger>
+                    <PopoverContent className="py-2 px-1 bg-white border-[1px] border-black/20 flex items-center justify-center flex-col gap-1 dark:bg-black dark:border-white/20">
+                      <h6 className="text-black/80 text-base dark:text-white">
+                        Hexadecimal code
+                      </h6>
+                      <input
+                        type="text"
+                        name="stroke"
+                        placeholder="#393939"
+                        value={color}
+                        onChange={handleColorChange}
+                        className="w-[90%] h-8 bg-transparent px-2 border-[1px] border-black/20 text-black text-sm placeholder:text-black rounded-md dark:border-white/20 dark:text-white dark:placeholder:text-white"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </DropdownMenuLabel>
+                <DropdownMenuLabel className="w-[300px] flex flex-row gap-2 items-center font-normal text-black/80 text-sm my-0.5 mt-2 dark:text-white/80">
+                  Fill color
+                </DropdownMenuLabel>
+                <DropdownMenuLabel className="w-[300px] h-full flex flex-row gap-3 items-center text-black/80 text-sm my-0.5 dark:text-white/80">
+                  {fillColors.map((item, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handleChangeShapeColor("fill", item)}
+                      className="w-[25px] h-[25px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10"
+                      style={{ backgroundColor: item }}
+                    />
+                  ))}
+                  <span className="w-[1px] h-[35px] bg-black/10 dark:bg-white/10" />
+                  <Popover>
+                    <PopoverTrigger>
+                      <div
+                        style={{ backgroundColor: color }}
+                        className="w-[25px] h-[25px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10"
+                      />
+                    </PopoverTrigger>
+                    <PopoverContent className="py-2 px-1 bg-white border-[1px] border-black/20 flex items-center justify-center flex-col gap-1 dark:bg-black dark:border-white/20">
+                      <h6 className="text-black/80 text-base dark:text-white">
+                        Hexadecimal code
+                      </h6>
+                      <input
+                        type="text"
+                        placeholder="#393939"
+                        name="fill"
+                        value={color}
+                        onChange={handleColorChange}
+                        className="w-[90%] h-8 bg-transparent px-2 border-[1px] border-black/20 text-black text-sm placeholder:text-black rounded-md dark:border-white/20 dark:text-white dark:placeholder:text-white"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </DropdownMenuLabel>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
       <nav className="w-2/4 h-full flex items-center justify-center">
