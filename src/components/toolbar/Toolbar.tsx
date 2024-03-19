@@ -277,20 +277,6 @@ const Toolbar = ({
       ),
       value: "reset",
     },
-    {
-      title: "Divider",
-    },
-    {
-      title: "More tools",
-      icon: (
-        <IconCategory2
-          className="text-black dark:text-white"
-          size={16}
-          strokeWidth={1.5}
-        />
-      ),
-      value: "more",
-    },
   ] as ToolItemsProps[]
   const searchParams = useSearchParams()
   const setMyRoom = usePermission((state: any) => state.setRoomId)
@@ -332,30 +318,6 @@ const Toolbar = ({
     "#6257f9",
     "#fc79ff",
   ]
-  const moreTools = [
-    {
-      title: "Polygon",
-      icon: (
-        <IconPolygon
-          className="text-black dark:text-white"
-          size={16}
-          strokeWidth={1.5}
-        />
-      ),
-      value: "polygon",
-    },
-    {
-      title: "Polyline",
-      icon: (
-        <IconVectorSpline
-          className="text-black dark:text-white"
-          size={16}
-          strokeWidth={1.5}
-        />
-      ),
-      value: "polyline",
-    },
-  ] as ToolItemsProps[]
 
   const handleChangeShapeColor = (property: string, value: string | number) => {
     if (!isEditingRef.current) isEditingRef.current = true
@@ -903,25 +865,7 @@ const Toolbar = ({
                   />
                 </TooltipTrigger>
                 <TooltipContent className="bg-white text-black dark:bg-[#070707] dark:text-white dark:border-white/10 mt-1">
-                  {item.title === "More tools" ? (
-                    <ul className="top-11 w-max h-max flex items-center justify-start flex-col gap-2 py-2">
-                      {moreTools.map((item, index) => (
-                        <li
-                          onClick={() => {
-                            setActiveTool(item.title)
-                            handleActive(item)
-                          }}
-                          className="w-[140px] py-2.5 px-2 hover:bg-black/10 dark:hover:bg-white/10 rounded-md flex flex-row items-center gap-3 cursor-pointer"
-                          key={index}
-                        >
-                          {item.icon}
-                          <span>{item.title}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>{item.title}</p>
-                  )}
+                  <p>{item.title}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
