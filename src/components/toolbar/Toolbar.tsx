@@ -79,6 +79,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useSearchParams, usePathname, useRouter } from "next/navigation"
 import { v4 } from "uuid"
+import { IconLogout } from "@tabler/icons-react"
 
 export type ToolItemsProps = {
   title: string
@@ -103,6 +104,12 @@ type ToolbarProps = {
   boardBg: string
   openEditor: boolean
   setOpenEditor: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+type SideBarProps = {
+  title: string
+  icon?: JSX.Element
+  kbd?: string
 }
 
 const Toolbar = ({
@@ -291,6 +298,7 @@ const Toolbar = ({
   const setSharing = usePermission((state: any) => state.setSharing)
   const pathname = usePathname()
   const router = useRouter()
+  const [realtime, setRealtime] = useState(false)
 
   useEffect(() => {
     if (searchParams.get("my-room") && isSharing) {
@@ -487,6 +495,49 @@ const Toolbar = ({
     },
   ]
 
+  const handleSideBar = (item: SideBarProps) => {
+    switch (item.title) {
+      case "Open":
+        return () => {
+          setDialogOpen(true)
+        }
+      case "Clean the board":
+        return () => {
+          handleActive({
+            title: "Reset",
+            value: "reset",
+          })
+        }
+      case "Realtime colaboration":
+        return () => {
+          setRealtime(true)
+        }
+
+      case "Dark mode" || "Light mode":
+        return () => {
+          setTheme(theme === "light" ? "dark" : "light")
+        }
+
+      case "Github":
+        return () => {
+          router.push("https://github.com/Tintaa307/drawing-online")
+        }
+
+      case "Linkedin":
+        return () => {
+          router.push(
+            "https://www.linkedin.com/in/valentin-gonzalez-6a1805276/"
+          )
+        }
+
+      case "My portfolio":
+        return () => {
+          router.push("https://valentin-portfolio.vercel.app")
+        }
+      default:
+        return () => {}
+    }
+  }
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setColor(event.target.value)
     setBoardBg(event.target.value)
@@ -543,23 +594,7 @@ const Toolbar = ({
                   {item.title !== "separator" ? (
                     <DropdownMenuItem
                       key={index}
-                      onClick={() => {
-                        if (
-                          item.title === "Dark mode" ||
-                          item.title === "Light mode"
-                        ) {
-                          setTheme(theme === "light" ? "dark" : "light")
-                        }
-                        if (item.title === "Open") {
-                          setDialogOpen(true)
-                        }
-                        if (item.title === "Clean the board") {
-                          handleActive({
-                            title: "Reset",
-                            value: "reset",
-                          })
-                        }
-                      }}
+                      onClick={handleSideBar(item)}
                       className={cn(
                         "w-full h-10 flex items-center justify-between text-black/80 text-sm cursor-pointer dark:text-white/80 dark:hover:bg-white/10",
                         {
@@ -853,7 +888,7 @@ const Toolbar = ({
               <IconSquare className="text-white" size={18} />
             </Button>
           )}
-          <Dialog>
+          <Dialog open={realtime}>
             <DialogTrigger asChild>
               <Button className="w-max px-6 text-white bg-primary flex gap-2 select-none">
                 Share
@@ -944,6 +979,16 @@ const Toolbar = ({
                     variant={"default"}
                   >
                     Continue <IconArrowRight size={20} className="text-white" />
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setRealtime(false)
+                    }}
+                    size="sm"
+                    className="w-1/2 h-11 text-white gap-2"
+                    variant={"secondary"}
+                  >
+                    Close <IconLogout size={20} className="text-white" />
                   </Button>
                 </div>
               </DialogContent>
