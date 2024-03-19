@@ -495,6 +495,30 @@ const Toolbar = ({
     },
   ]
 
+  const handleExportAsImage = () => {
+    const drawingData = localStorage.getItem("drawing")!
+
+    const canvas = fabricRef.current
+
+    if (canvas && drawingData) {
+      canvas.discardActiveObject()
+      canvas.requestRenderAll()
+      const dataURL = canvas.toDataURL({
+        format: "jpg",
+        quality: 0.8,
+      })
+
+      const a = document.createElement("a")
+      a.href = dataURL
+      a.download = "drawing-online-image.png"
+      a.click()
+    }
+
+    setDialogOpen(false)
+
+    return
+  }
+
   const handleSideBar = (item: SideBarProps) => {
     switch (item.title) {
       case "Open":
@@ -533,6 +557,11 @@ const Toolbar = ({
       case "My portfolio":
         return () => {
           router.push("https://valentin-portfolio.vercel.app")
+        }
+
+      case "Export image":
+        return () => {
+          handleExportAsImage()
         }
       default:
         return () => {}
