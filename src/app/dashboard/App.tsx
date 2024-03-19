@@ -112,8 +112,6 @@ const Dashboard = ({ params }: { params: { id: string } }) => {
         syncShapeInStorage,
         setActiveElement,
       })
-      setActiveElement("select")
-      setActiveTool("Select")
     })
 
     canvas.on("object:modified", (options) => {
