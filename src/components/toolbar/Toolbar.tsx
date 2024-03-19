@@ -223,6 +223,18 @@ const Toolbar = ({
       value: "line",
     },
     {
+      title: "Arrow",
+      icon: (
+        <IconArrowNarrowRight
+          className="text-black dark:text-white"
+          size={16}
+          strokeWidth={1.5}
+        />
+      ),
+      value: "group",
+    },
+
+    {
       title: "Free drawing",
       icon: (
         <IconPencil

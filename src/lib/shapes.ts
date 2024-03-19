@@ -84,6 +84,36 @@ export const createText = (
   } as fabric.ITextOptions)
 }
 
+export const createArrow = (pointer: PointerEvent, theme: string) => {
+  const arrow = new fabric.Triangle({
+    width: 15,
+    height: 15,
+    fill: "#fff",
+    stroke: theme === "light" ? "#141414" : "#f2f2f2",
+    strokeWidth: 2,
+    angle: 140,
+    selectable: false,
+    objectId: uuidv4(),
+  } as CustomFabricObject<fabric.Triangle>)
+  const line = new fabric.Line(
+    [pointer.x, pointer.y, pointer.x + 100, pointer.y + 100],
+    {
+      stroke: theme === "light" ? "#141414" : "#f2f2f2",
+      strokeWidth: 2,
+      objectId: uuidv4(),
+    } as CustomFabricObject<fabric.Line>
+  )
+  arrow.set({
+    left: line.x2! + 17,
+    top: line.y2! + 7,
+  })
+  return new fabric.Group([line, arrow], {
+    left: pointer.x,
+    top: pointer.y,
+    objectId: uuidv4(),
+  } as CustomFabricObject<fabric.Group>)
+}
+
 export const createSpecificShape = (
   shapeType: string,
   pointer: PointerEvent,
@@ -104,6 +134,9 @@ export const createSpecificShape = (
 
     case "text":
       return createText(pointer, theme, "Write something here...")
+
+    case "group":
+      return createArrow(pointer, theme)
 
     default:
       return null
