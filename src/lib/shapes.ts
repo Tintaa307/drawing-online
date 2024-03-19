@@ -16,7 +16,7 @@ export const createRectangle = (pointer: PointerEvent, theme: string) => {
     height: 100,
     fill: "transparent",
     stroke: theme === "light" ? "#141414" : "#f2f2f2",
-    strokeWidth: 2.5,
+    strokeWidth: 3,
     objectId: uuidv4(),
   } as CustomFabricObject<fabric.Rect>)
 
@@ -40,7 +40,7 @@ export const createTriangle = (pointer: PointerEvent, theme: string) => {
     height: 100,
     fill: "transparent",
     stroke: theme === "light" ? "#141414" : "#f2f2f2",
-    strokeWidth: 2.5,
+    strokeWidth: 3,
     objectId: uuidv4(),
   } as CustomFabricObject<fabric.Triangle>)
 }
@@ -50,7 +50,7 @@ export const createCircle = (pointer: PointerEvent, theme: string) => {
     left: pointer.x,
     top: pointer.y,
     radius: 100,
-    strokeWidth: 2.5,
+    strokeWidth: 3,
     fill: "transparent",
     stroke: theme === "light" ? "#141414" : "#f2f2f2",
     objectId: uuidv4(),
@@ -62,7 +62,7 @@ export const createLine = (pointer: PointerEvent, theme: string) => {
     [pointer.x, pointer.y, pointer.x + 100, pointer.y + 100],
     {
       stroke: theme === "light" ? "#141414" : "#f2f2f2",
-      strokeWidth: 2.5,
+      strokeWidth: 3,
       objectId: uuidv4(),
     } as CustomFabricObject<fabric.Line>
   )

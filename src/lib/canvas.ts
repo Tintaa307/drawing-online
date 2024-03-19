@@ -65,6 +65,7 @@ export const handleCanvasMouseDown = ({
     isDrawing.current = true
     canvas.isDrawingMode = true
     canvas.freeDrawingBrush.width = 5
+    canvas.freeDrawingBrush.color = theme === "dark" ? "#d1d1d1" : "black"
     return
   }
 
@@ -227,6 +228,7 @@ export const handlePathCreated = ({
 
   // set unique id to path object
   path.set({
+    stroke: "#d1d1d1",
     objectId: uuid4(),
   })
 
@@ -341,6 +343,7 @@ export const renderCanvas = ({
   fabricRef,
   canvasObjects,
   activeObjectRef,
+  theme,
 }: RenderCanvas) => {
   // clear canvas
   fabricRef.current?.clear()
@@ -363,6 +366,34 @@ export const renderCanvas = ({
           // if element is active, keep it in active state so that it can be edited further
           if (activeObjectRef.current?.objectId === objectId) {
             fabricRef.current?.setActiveObject(enlivenedObj)
+          }
+
+          // verify the theme and set the stroke color of the object
+
+          if (enlivenedObj instanceof fabric.Rect) {
+            enlivenedObj.set({
+              stroke: theme === "light" ? "#141414" : "#fff",
+            })
+          } else if (enlivenedObj instanceof fabric.Circle) {
+            enlivenedObj.set({
+              stroke: theme === "light" ? "#141414" : "#fff",
+            })
+          } else if (enlivenedObj instanceof fabric.Triangle) {
+            enlivenedObj.set({
+              stroke: theme === "light" ? "#141414" : "#fff",
+            })
+          } else if (enlivenedObj instanceof fabric.Line) {
+            enlivenedObj.set({
+              stroke: theme === "light" ? "#141414" : "#fff",
+            })
+          } else if (enlivenedObj instanceof fabric.IText) {
+            enlivenedObj.set({
+              fill: theme === "light" ? "#141414" : "#fff",
+            })
+          } else if (enlivenedObj instanceof fabric.Path) {
+            enlivenedObj.set({
+              stroke: theme === "light" ? "#141414" : "#fff",
+            })
           }
 
           // add object to canvas

@@ -11,6 +11,7 @@ import {
   handleCanvasSelectionCreated,
   handleCanvasZoom,
   handleCanvaseMouseMove,
+  handlePathCreated,
   handleResize,
   initializeFabric,
   renderCanvas,
@@ -27,6 +28,8 @@ import { handleImageUpload, updateShapesColor } from "@/lib/shapes"
 import { useTheme } from "next-themes"
 import { Attributes } from "@/types/type"
 import Dialog from "@/components/dialog/Dialog"
+
+const MAX_LAYERS = 100
 
 const Dashboard = ({ params }: { params: { id: string } }) => {
   const undo = useUndo()
@@ -150,6 +153,13 @@ const Dashboard = ({ params }: { params: { id: string } }) => {
       })
     })
 
+    canvas.on("path:created", (options) => {
+      handlePathCreated({
+        options,
+        syncShapeInStorage,
+      })
+    })
+
     return () => {
       canvas.dispose()
     }
@@ -190,6 +200,7 @@ const Dashboard = ({ params }: { params: { id: string } }) => {
       fabricRef,
       canvasObjects,
       activeObjectRef,
+      theme: theme as string,
     })
   }, [canvasObjects])
 
