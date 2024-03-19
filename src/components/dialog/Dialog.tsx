@@ -1,9 +1,9 @@
 "use client"
 
-import { cn } from "@/lib/utils"
+import { cn, exportToPdf } from "@/lib/utils"
 import React from "react"
 import { Button } from "../ui/button"
-import { IconX } from "@tabler/icons-react"
+import { IconFileTypePdf, IconPhotoPlus, IconX } from "@tabler/icons-react"
 
 type DialogProps = {
   dialogOpen: boolean
@@ -15,24 +15,21 @@ const Dialog = ({ dialogOpen, setDialogOpen }: DialogProps) => {
 
   const options = [
     {
+      icon: <IconFileTypePdf size={40} className="text-primary" />,
       title: "Export to PDF",
       description:
         "Export the scene data as a PDF from which you can import later.",
-      action: () => {},
+      action: exportToPdf,
       buttonText: "Export as PDF",
     },
     {
-      title: "Export to image",
-      description:
-        "Export the scene data as an image from which you can import later.",
-      action: () => {},
-      buttonText: "Export as Image",
-    },
-    {
+      icon: <IconPhotoPlus size={40} className="text-primary" />,
       title: "Import an image",
       description:
         "Import an image to the canvas from which you can export later.",
-      action: () => fileRef.current?.click(),
+      action: () => {
+        fileRef.current?.click()
+      },
       buttonText: "Import Image",
     },
   ]
@@ -40,7 +37,7 @@ const Dialog = ({ dialogOpen, setDialogOpen }: DialogProps) => {
   return (
     <div
       className={cn(
-        "absolute top-0 left-0 w-full h-screen z-50 bg-black/30 hidden",
+        "absolute top-0 left-0 w-full h-screen z-50 bg-black/40 hidden",
         {
           "flex items-center justify-center": dialogOpen,
         }
@@ -48,14 +45,14 @@ const Dialog = ({ dialogOpen, setDialogOpen }: DialogProps) => {
     >
       <section
         className={cn(
-          "relative w-1/2 h-[400px] bg-white border-[1px] border-black/10 flex items-center justify-start flex-col gap-8 opacity-0 transition-all duration-200 rounded-lg shadow-xl dark:bg-[#070707] dark:border-white/20",
+          "relative w-[40%] h-[400px] bg-white border-[1px] border-black/10 flex items-center justify-start flex-col gap-8 opacity-0 transition-all duration-200 rounded-lg shadow-xl dark:bg-[#070707] dark:border-white/20",
           {
             "opacity-100 transition-all duration-200": dialogOpen,
           }
         )}
       >
         <div className="w-full h-max flex items-center justify-center">
-          <h1 className="text-black text-3xl font-normal my-12 dark:text-white">
+          <h1 className="text-black text-3xl font-normal my-8 dark:text-white/90">
             Load or export your scene data
           </h1>
         </div>
@@ -70,12 +67,13 @@ const Dialog = ({ dialogOpen, setDialogOpen }: DialogProps) => {
           {options.map((option, index) => (
             <div
               key={index}
-              className="w-1/3 h-full flex items-center justify-center flex-col gap-3 text-center"
+              className="w-1/2 h-full flex items-center justify-center flex-col gap-3 border-[1px] text-center shadow-xl dark:bg-[#040404] dark:border-white/20 rounded-lg py-5 px-1"
             >
-              <h3 className="text-black/90 text-2xl font-normal dark:text-white/90">
+              {option.icon}
+              <h3 className="text-black/90 text-xl font-normal dark:text-white/90">
                 {option.title}
               </h3>
-              <p className="text-black/70 text-xs font-normal dark:text-white/70">
+              <p className="text-black/70 text-sm font-normal dark:text-white/70 px-3">
                 {option.description}
               </p>
               <Button

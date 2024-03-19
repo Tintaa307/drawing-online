@@ -114,8 +114,9 @@ export const exportToPdf = () => {
   const data = canvas.toDataURL()
 
   // add the image to the pdf
-  doc.addImage(data, "PNG", 0, 0, canvas.width, canvas.height)
+  doc.setFillColor(0, 0, 0, 0.4)
+  doc.addImage(data, "jpg", 0, 0, canvas.width, canvas.height)
 
   // download the pdf
-  doc.save("canvas.pdf")
+  doc.save("drawing-online.pdf")
 }
