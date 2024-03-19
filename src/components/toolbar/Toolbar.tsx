@@ -34,6 +34,9 @@ import {
   IconCopy,
   IconArrowRight,
   IconCheck,
+  IconX,
+  IconBorderRadius,
+  IconBorderNone,
 } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
@@ -297,6 +300,7 @@ const Toolbar = ({
 
   const colors = ["#fff0cb", "#e1ffcb", "#cbffff", "#ffdfff"]
   const shapesColors = [
+    "transparent",
     "#fd5d5dff",
     "#fad963ff",
     "#93fa63ff",
@@ -304,7 +308,22 @@ const Toolbar = ({
     "#fb4bffff",
   ]
 
-  const fillColors = ["#fe8a8a", "#fbe48f", "#b2fb8f", "#6257f9", "#fc79ff"]
+  const drawColors = [
+    "#fd5d5dff",
+    "#fad963ff",
+    "#93fa63ff",
+    "#392bf7ff",
+    "#fb4bffff",
+  ]
+
+  const fillColors = [
+    "transparent",
+    "#fe8a8a",
+    "#fbe48f",
+    "#b2fb8f",
+    "#6257f9",
+    "#fc79ff",
+  ]
   const moreTools = [
     {
       title: "Polygon",
@@ -330,7 +349,7 @@ const Toolbar = ({
     },
   ] as ToolItemsProps[]
 
-  const handleChangeShapeColor = (property: string, value: string) => {
+  const handleChangeShapeColor = (property: string, value: string | number) => {
     if (!isEditingRef.current) isEditingRef.current = true
 
     setElementAttributes((prev) => ({
@@ -622,9 +641,13 @@ const Toolbar = ({
                     <div
                       key={index}
                       onClick={() => handleChangeShapeColor("stroke", item)}
-                      className="w-[25px] h-[25px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10"
+                      className="w-[25px] h-[25px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10 flex items-center justify-center"
                       style={{ backgroundColor: item }}
-                    />
+                    >
+                      {item === "transparent" && (
+                        <IconX size={13} className="text-white" />
+                      )}
+                    </div>
                   ))}
                   <span className="w-[1px] h-[35px] bg-black/10 dark:bg-white/10" />
                   <Popover>
@@ -657,9 +680,13 @@ const Toolbar = ({
                     <div
                       key={index}
                       onClick={() => handleChangeShapeColor("fill", item)}
-                      className="w-[25px] h-[25px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10"
+                      className="w-[25px] h-[25px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10 flex items-center justify-center"
                       style={{ backgroundColor: item }}
-                    />
+                    >
+                      {item === "transparent" && (
+                        <IconX size={13} className="text-white" />
+                      )}
+                    </div>
                   ))}
                   <span className="w-[1px] h-[35px] bg-black/10 dark:bg-white/10" />
                   <Popover>
@@ -684,43 +711,65 @@ const Toolbar = ({
                     </PopoverContent>
                   </Popover>
                 </DropdownMenuLabel>
+
                 <DropdownMenuLabel
                   tabIndex={0}
                   className="w-[300px] flex flex-row gap-2 items-center font-normal text-black/80 text-sm my-0.5 mt-2 dark:text-white/80"
                 >
-                  Draw color
+                  Border width
                 </DropdownMenuLabel>
                 <DropdownMenuLabel className="w-[300px] h-full flex flex-row gap-3 items-center text-black/80 text-sm my-0.5 dark:text-white/80">
-                  {shapesColors.map((item, index) => (
-                    <div
-                      key={index}
-                      onClick={() => handleChangeShapeColor("draw", item)}
-                      className="w-[25px] h-[25px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10"
-                      style={{ backgroundColor: item }}
-                    />
-                  ))}
-                  <span className="w-[1px] h-[35px] bg-black/10 dark:bg-white/10" />
-                  <Popover>
-                    <PopoverTrigger>
-                      <div
-                        style={{ backgroundColor: color }}
-                        className="w-[25px] h-[25px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10"
-                      />
-                    </PopoverTrigger>
-                    <PopoverContent className="py-2 px-1 bg-white border-[1px] border-black/20 flex items-center justify-center flex-col gap-1 dark:bg-black dark:border-white/20">
-                      <h6 className="text-black/80 text-base dark:text-white">
-                        Hexadecimal code
-                      </h6>
-                      <input
-                        type="text"
-                        name="stroke"
-                        placeholder="#393939"
-                        value={color}
-                        onChange={handleColorChange}
-                        className="w-[90%] h-8 bg-transparent px-2 border-[1px] border-black/20 text-black text-sm placeholder:text-black rounded-md dark:border-white/20 dark:text-white dark:placeholder:text-white"
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <div
+                          onClick={() =>
+                            handleChangeShapeColor("strokeWidth", 1)
+                          }
+                          className="w-[35px] h-[35px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10 flex items-center justify-center"
+                        >
+                          <span className="dark:bg-white bg-black w-[50%] h-[1.5px] rounded-full" />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent className="absolute -left-12 top-11 w-max px-2 bg-white text-black border-black/10 dark:bg-[#090909] dark:text-white border-[1px] dark:border-white/10">
+                        <p className="text-xs font-normal">Border thin</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <div
+                          onClick={() =>
+                            handleChangeShapeColor("strokeWidth", 3)
+                          }
+                          className="w-[35px] h-[35px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10 flex items-center justify-center"
+                        >
+                          <span className="dark:bg-white bg-black w-[50%] h-[2.5px] rounded-full" />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent className="absolute -left-12 top-11 w-max px-2 bg-white text-black border-black/10 dark:bg-[#090909] dark:text-white border-[1px] dark:border-white/10">
+                        <p className="text-xs font-normal">Border normal</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <div
+                          onClick={() =>
+                            handleChangeShapeColor("strokeWidth", 5)
+                          }
+                          className="w-[35px] h-[35px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10 flex items-center justify-center"
+                        >
+                          <span className="dark:bg-white bg-black w-[50%] h-[4.5px] rounded-full" />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent className="absolute -left-12 top-11 w-max px-2 bg-white text-black border-black/10 dark:bg-[#090909] dark:text-white border-[1px] dark:border-white/10">
+                        <p className="text-xs font-normal">Border thick</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </DropdownMenuLabel>
               </DropdownMenuContent>
             </DropdownMenu>

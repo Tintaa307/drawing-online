@@ -84,42 +84,6 @@ export const createText = (
   } as fabric.ITextOptions)
 }
 
-export const createPolygon = (pointer: PointerEvent, theme: string) => {
-  return new fabric.Polygon(
-    [
-      { x: 250, y: 0 },
-      { x: 500, y: 500 },
-      { x: 0, y: 500 },
-    ],
-    {
-      left: pointer.x,
-      top: pointer.y,
-      fill: "transparent",
-      stroke: theme === "light" ? "#141414" : "#f2f2f2",
-      strokeWidth: 2.5,
-      objectId: uuidv4(),
-    } as CustomFabricObject<fabric.Polygon>
-  )
-}
-
-export const createPolyLine = (pointer: PointerEvent, theme: string) => {
-  return new fabric.Polyline(
-    [
-      { x: 250, y: 0 },
-      { x: 500, y: 500 },
-      { x: 0, y: 500 },
-    ],
-    {
-      left: pointer.x,
-      top: pointer.y,
-      fill: "transparent",
-      stroke: theme === "light" ? "#141414" : "#f2f2f2",
-      strokeWidth: 2.5,
-      objectId: uuidv4(),
-    } as CustomFabricObject<fabric.Polyline>
-  )
-}
-
 export const createSpecificShape = (
   shapeType: string,
   pointer: PointerEvent,
@@ -140,12 +104,6 @@ export const createSpecificShape = (
 
     case "text":
       return createText(pointer, theme, "Write something here...")
-
-    case "polygon":
-      createPolygon(pointer, theme)
-
-    case "polyline":
-      createPolyLine(pointer, theme)
 
     default:
       return null
@@ -191,13 +149,12 @@ export const modifyShape = ({
 
   if (!selectedElement || selectedElement?.type === "activeSelection") return
 
-  // if  property is width or height, set the scale of the selected element
-  if (property === "width") {
-    selectedElement.set("scaleX", 1)
-    selectedElement.set("width", value)
-  } else if (property === "height") {
-    selectedElement.set("scaleY", 1)
-    selectedElement.set("height", value)
+  if (property === "fill") {
+    selectedElement.set("fill", value)
+  } else if (property === "stroke") {
+    selectedElement.set("stroke", value)
+  } else if (property === "draw") {
+    selectedElement.set("stroke", value)
   } else {
     if (selectedElement[property as keyof object] === value) return
     selectedElement.set(property as keyof object, value)

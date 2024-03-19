@@ -41,13 +41,14 @@ export type ShapeData = {
 }
 
 export type Attributes = {
-  width: string
-  height: string
   fontSize: string
   fontFamily: string
   fontWeight: string
   fill: string
   stroke: string
+  rx: number
+  ry: number
+  borderWidth: number
 }
 
 export type ActiveElement = {
@@ -170,6 +171,7 @@ export type RenderCanvas = {
   canvasObjects: any
   activeObjectRef: any
   theme: string
+  elementAttributes: Attributes
 }
 
 export type CursorChatProps = {

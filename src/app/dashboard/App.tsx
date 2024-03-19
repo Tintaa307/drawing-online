@@ -8,6 +8,7 @@ import {
   handleCanvasMouseUp,
   handleCanvasObjectModified,
   handleCanvasObjectMoving,
+  handleCanvasObjectScaling,
   handleCanvasSelectionCreated,
   handleCanvasZoom,
   handleCanvaseMouseMove,
@@ -49,13 +50,14 @@ const Dashboard = ({ params }: { params: { id: string } }) => {
   const [openEditor, setOpenEditor] = useState(false)
   const isEditingRef = useRef(false)
   const [elementAttributes, setElementAttributes] = useState<Attributes>({
-    width: "",
-    height: "",
     fill: "",
-    stroke: theme === "light" ? "#141414" : "#f2f2f2",
+    stroke: "",
     fontFamily: "",
     fontSize: "",
     fontWeight: "",
+    borderWidth: 3,
+    rx: 10,
+    ry: 10,
   })
 
   const canvasObjects = useStorage((root) => root.canvasObjects)
@@ -110,6 +112,8 @@ const Dashboard = ({ params }: { params: { id: string } }) => {
         syncShapeInStorage,
         setActiveElement,
       })
+      setActiveElement("select")
+      setActiveTool("Select")
     })
 
     canvas.on("object:modified", (options) => {
@@ -201,6 +205,7 @@ const Dashboard = ({ params }: { params: { id: string } }) => {
       canvasObjects,
       activeObjectRef,
       theme: theme as string,
+      elementAttributes,
     })
   }, [canvasObjects])
 

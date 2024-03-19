@@ -301,8 +301,6 @@ export const handleCanvasSelectionCreated = ({
       : selectedElement?.height
 
     setElementAttributes({
-      width: scaledWidth?.toFixed(0).toString() || "",
-      height: scaledHeight?.toFixed(0).toString() || "",
       fill: selectedElement?.fill?.toString() || "",
       stroke: selectedElement?.stroke || "",
       // @ts-ignore
@@ -311,6 +309,12 @@ export const handleCanvasSelectionCreated = ({
       fontFamily: selectedElement?.fontFamily || "",
       // @ts-ignore
       fontWeight: selectedElement?.fontWeight || "",
+      // @ts-ignore
+      borderWidth: selectedElement?.strokeWidth || "",
+      // @ts-ignore
+      rx: selectedElement?.rx || "",
+      // @ts-ignore
+      ry: selectedElement?.ry || "",
     })
   }
 }
@@ -335,6 +339,7 @@ export const handleCanvasObjectScaling = ({
     ...prev,
     width: scaledWidth?.toFixed(0).toString() || "",
     height: scaledHeight?.toFixed(0).toString() || "",
+    strokeWidth: 3,
   }))
 }
 
@@ -344,6 +349,7 @@ export const renderCanvas = ({
   canvasObjects,
   activeObjectRef,
   theme,
+  elementAttributes,
 }: RenderCanvas) => {
   // clear canvas
   fabricRef.current?.clear()
@@ -368,32 +374,56 @@ export const renderCanvas = ({
             fabricRef.current?.setActiveObject(enlivenedObj)
           }
 
-          // verify the theme and set the stroke color of the object
+          // verify the theme and set the stroke color of the object only if the object did not have previus a stroke color
 
-          if (enlivenedObj instanceof fabric.Rect) {
-            enlivenedObj.set({
-              stroke: theme === "light" ? "#141414" : "#fff",
-            })
-          } else if (enlivenedObj instanceof fabric.Circle) {
-            enlivenedObj.set({
-              stroke: theme === "light" ? "#141414" : "#fff",
-            })
-          } else if (enlivenedObj instanceof fabric.Triangle) {
-            enlivenedObj.set({
-              stroke: theme === "light" ? "#141414" : "#fff",
-            })
-          } else if (enlivenedObj instanceof fabric.Line) {
-            enlivenedObj.set({
-              stroke: theme === "light" ? "#141414" : "#fff",
-            })
-          } else if (enlivenedObj instanceof fabric.IText) {
-            enlivenedObj.set({
-              fill: theme === "light" ? "#141414" : "#fff",
-            })
-          } else if (enlivenedObj instanceof fabric.Path) {
-            enlivenedObj.set({
-              stroke: theme === "light" ? "#141414" : "#fff",
-            })
+          if (
+            elementAttributes.stroke === "" &&
+            elementAttributes.fill === "" &&
+            elementAttributes.borderWidth === 3
+          ) {
+            switch (enlivenedObj.type) {
+              case "rect":
+                enlivenedObj.set({
+                  stroke: theme === "light" ? "#141414" : "#fff",
+                })
+                break
+              case "circle":
+                enlivenedObj.set({
+                  stroke: theme === "light" ? "#141414" : "#fff",
+                })
+                break
+              case "triangle":
+                enlivenedObj.set({
+                  stroke: theme === "light" ? "#141414" : "#fff",
+                })
+                break
+              case "line":
+                enlivenedObj.set({
+                  stroke: theme === "light" ? "#141414" : "#fff",
+                })
+                break
+              case "i-text":
+                enlivenedObj.set({
+                  fill: theme === "light" ? "#141414" : "#fff",
+                })
+                break
+              case "path":
+                enlivenedObj.set({
+                  stroke: theme === "light" ? "#141414" : "#fff",
+                })
+                break
+
+              default:
+                break
+            }
+          } else {
+            if (activeObjectRef.current?.objectId === objectId) {
+              enlivenedObj.set({
+                stroke: elementAttributes.stroke,
+                fill: elementAttributes.fill,
+                strokeWidth: elementAttributes.borderWidth,
+              })
+            }
           }
 
           // add object to canvas
