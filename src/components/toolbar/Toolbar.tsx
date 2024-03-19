@@ -519,6 +519,30 @@ const Toolbar = ({
     return
   }
 
+  const handleSaveAs = () => {
+    const drawingData = localStorage.getItem("drawing")!
+
+    // quiero que el usuario elija donde guardar el archivo
+
+    const canvas = fabricRef.current
+
+    if (canvas && drawingData) {
+      canvas.discardActiveObject()
+      canvas.requestRenderAll()
+      const dataURL = canvas.toDataURL({
+        format: "jpg",
+        quality: 0.8,
+      })
+
+      const a = document.createElement("a")
+      a.href = dataURL
+      a.download = "drawing-online-image.png"
+      a.click()
+    }
+
+    return
+  }
+
   const handleSideBar = (item: SideBarProps) => {
     switch (item.title) {
       case "Open":
@@ -562,6 +586,11 @@ const Toolbar = ({
       case "Export image":
         return () => {
           handleExportAsImage()
+        }
+
+      case "Save as":
+        return () => {
+          handleSaveAs()
         }
       default:
         return () => {}
