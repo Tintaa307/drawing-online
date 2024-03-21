@@ -132,7 +132,7 @@ const Toolbar = ({
   setOpenEditor,
 }: ToolbarProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [isLocked, setIsLocked] = useState(false)
+  const [isLocked, setIsLocked] = useState(true)
   const [color, setColor] = useState("#393939")
   const { setTheme, theme } = useTheme()
   const [isCopied, setIsCopied] = useState(false)
@@ -911,6 +911,10 @@ const Toolbar = ({
                   onClick={() => {
                     setActiveTool(item.title)
                     handleActive(item)
+
+                    if (item.title === "Lock" || item.title === "Unlock") {
+                      setIsLocked(!isLocked)
+                    }
                   }}
                 >
                   <li
@@ -921,6 +925,8 @@ const Toolbar = ({
                         item.title !== "Divider",
                       "bg-primary/20 text-white dark:bg-primary dark:hover:bg-primary/80 rounded-lg":
                         activeTool === item.title,
+                      "bg-primary hover:bg-primary/70":
+                        item.title === "Lock" || item.title === "Unlock",
                     })}
                   >
                     {item.icon}
@@ -968,7 +974,12 @@ const Toolbar = ({
           )}
           <Dialog open={realtime}>
             <DialogTrigger asChild>
-              <Button className="w-max px-6 text-white bg-primary flex gap-2 select-none">
+              <Button
+                onClick={() => {
+                  setRealtime(true)
+                }}
+                className="w-max px-6 text-white bg-primary flex gap-2 select-none"
+              >
                 Share
                 <IconShare className="text-white" size={18} />
               </Button>
