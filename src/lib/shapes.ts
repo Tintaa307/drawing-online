@@ -188,6 +188,8 @@ export const modifyShape = ({
     selectedElement.set("stroke", value)
   } else if (property === "draw") {
     selectedElement.set("stroke", value)
+  } else if (property === "strokeWidth") {
+    selectedElement.set("strokeWidth", Number(value))
   } else {
     if (selectedElement[property as keyof object] === value) return
     selectedElement.set(property as keyof object, value)

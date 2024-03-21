@@ -341,7 +341,7 @@ const Toolbar = ({
     "#fc79ff",
   ]
 
-  const handleChangeShapeColor = (property: string, value: string | number) => {
+  const handleChangeShapeColor = (property: string, value: string) => {
     if (!isEditingRef.current) isEditingRef.current = true
 
     setElementAttributes((prev) => ({
@@ -850,7 +850,7 @@ const Toolbar = ({
                       <TooltipTrigger>
                         <div
                           onClick={() =>
-                            handleChangeShapeColor("strokeWidth", 1)
+                            handleChangeShapeColor("strokeWidth", "1")
                           }
                           className="w-[35px] h-[35px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10 flex items-center justify-center"
                         >
@@ -867,7 +867,7 @@ const Toolbar = ({
                       <TooltipTrigger>
                         <div
                           onClick={() =>
-                            handleChangeShapeColor("strokeWidth", 3)
+                            handleChangeShapeColor("strokeWidth", "3")
                           }
                           className="w-[35px] h-[35px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10 flex items-center justify-center"
                         >
@@ -884,7 +884,7 @@ const Toolbar = ({
                       <TooltipTrigger>
                         <div
                           onClick={() =>
-                            handleChangeShapeColor("strokeWidth", 5)
+                            handleChangeShapeColor("strokeWidth", "5")
                           }
                           className="w-[35px] h-[35px] rounded-lg cursor-pointer border-[1px] border-black/10 dark:border-white/10 flex items-center justify-center"
                         >
@@ -925,7 +925,7 @@ const Toolbar = ({
                         item.title !== "Divider",
                       "bg-primary/20 text-white dark:bg-primary dark:hover:bg-primary/80 rounded-lg":
                         activeTool === item.title,
-                      "bg-primary hover:bg-primary/70":
+                      "bg-primary/20 text-white dark:bg-primary dark:hover:bg-primary/80":
                         item.title === "Lock" || item.title === "Unlock",
                     })}
                   >

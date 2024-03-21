@@ -140,13 +140,13 @@ const Dashboard = ({ params }: { params: { id: string } }) => {
 
     canvas.on("selection:created", (options) => {
       setOpenEditor(true)
+      console.log(options.selected)
       handleCanvasSelectionCreated({
         options,
         isEditingRef,
         setElementAttributes,
       })
     })
-
     canvas?.on("object:moving", (options) => {
       handleCanvasObjectMoving({
         options,
@@ -157,6 +157,7 @@ const Dashboard = ({ params }: { params: { id: string } }) => {
       handlePathCreated({
         options,
         syncShapeInStorage,
+        theme,
       })
     })
 

@@ -153,6 +153,7 @@ export type CanvasObjectModified = {
 export type CanvasPathCreated = {
   options: (fabric.IEvent & { path: CustomFabricObject<fabric.Path> }) | any
   syncShapeInStorage: (shape: fabric.Object) => void
+  theme: string
 }
 
 export type CanvasSelectionCreated = {

@@ -59,7 +59,7 @@ export const handleCanvasMouseDown = ({
     isDrawing.current = true
     canvas.isDrawingMode = true
     canvas.freeDrawingBrush.width = 5
-    canvas.freeDrawingBrush.color = theme === "dark" ? "#d1d1d1" : "black"
+    canvas.freeDrawingBrush.color = theme === "dark" ? "#fff" : "#141414"
     return
   }
 
@@ -221,6 +221,7 @@ export const handleCanvasObjectModified = ({
 // update shape in storage when path is created when in freeform mode
 export const handlePathCreated = ({
   options,
+  theme,
   syncShapeInStorage,
 }: CanvasPathCreated) => {
   // get path object
@@ -229,7 +230,6 @@ export const handlePathCreated = ({
 
   // set unique id to path object
   path.set({
-    stroke: "#d1d1d1",
     objectId: uuid4(),
   })
 
@@ -288,18 +288,10 @@ export const handleCanvasSelectionCreated = ({
   if (!options?.selected) return
 
   // get the selected element
-  const selectedElement = options?.selected[0] as fabric.Object
+  const selectedElements = options?.selected as fabric.Object[]
 
-  // if only one element is selected, set element attributes
-  if (selectedElement && options.selected.length === 1) {
-    // calculate scaled dimensions of the object
-    const scaledWidth = selectedElement?.scaleX
-      ? selectedElement?.width! * selectedElement?.scaleX
-      : selectedElement?.width
-
-    const scaledHeight = selectedElement?.scaleY
-      ? selectedElement?.height! * selectedElement?.scaleY
-      : selectedElement?.height
+  selectedElements.forEach((element) => {
+    const selectedElement = element as fabric.Object
 
     setElementAttributes({
       fill: selectedElement?.fill?.toString() || "",
@@ -317,7 +309,7 @@ export const handleCanvasSelectionCreated = ({
       // @ts-ignore
       ry: selectedElement?.ry || "",
     })
-  }
+  })
 }
 
 // update element attributes when element is scaled
@@ -378,7 +370,8 @@ export const renderCanvas = ({
           // verify the theme and set the stroke color of the object only if the object did not have previus a stroke color
           if (
             enlivenedObj.stroke === "#141414" ||
-            enlivenedObj.stroke === "#fff"
+            enlivenedObj.stroke === "#fff" ||
+            enlivenedObj.stroke === "#d1d1d1"
           ) {
             switch (enlivenedObj.type) {
               case "rect":
