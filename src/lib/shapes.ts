@@ -234,34 +234,43 @@ export const updateShapesColor = ({
   syncShapeInStorage: (shape: fabric.Object) => void
 }) => {
   canvas.getObjects().forEach((obj) => {
-    if (obj instanceof fabric.Rect) {
-      obj.set({
-        stroke: theme === "light" ? "#141414" : "#fff",
-      })
-    }
+    if (obj.stroke === "#141414" || obj.stroke === "#fff") {
+      switch (obj.type) {
+        case "rect":
+          obj.set({
+            stroke: theme === "light" ? "#141414" : "#fff",
+          })
+          break
+        case "triangle":
+          obj.set({
+            stroke: theme === "light" ? "#141414" : "#fff",
+          })
+          break
+        case "circle":
+          obj.set({
+            stroke: theme === "light" ? "#141414" : "#fff",
+          })
+          break
+        case "line":
+          obj.set({
+            stroke: theme === "light" ? "#141414" : "#fff",
+          })
+          break
+        case "i-text":
+          obj.set({
+            fill: theme === "light" ? "#1e1e1e" : "#fff",
+          })
+          break
 
-    if (obj instanceof fabric.Triangle) {
-      obj.set({
-        stroke: theme === "light" ? "#141414" : "#fff",
-      })
-    }
+        case "group":
+          obj.set({
+            stroke: theme === "light" ? "#141414" : "#fff",
+          })
+          break
 
-    if (obj instanceof fabric.Circle) {
-      obj.set({
-        stroke: theme === "light" ? "#141414" : "#fff",
-      })
-    }
-
-    if (obj instanceof fabric.Line) {
-      obj.set({
-        stroke: theme === "light" ? "#141414" : "#fff",
-      })
-    }
-
-    if (obj instanceof fabric.IText) {
-      obj.set({
-        fill: theme === "light" ? "#1e1e1e" : "#fff",
-      })
+        default:
+          break
+      }
     }
 
     obj.setCoords()

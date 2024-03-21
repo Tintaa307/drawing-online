@@ -376,47 +376,51 @@ export const renderCanvas = ({
           }
 
           // verify the theme and set the stroke color of the object only if the object did not have previus a stroke color
+          if (
+            enlivenedObj.stroke === "#141414" ||
+            enlivenedObj.stroke === "#fff"
+          ) {
+            switch (enlivenedObj.type) {
+              case "rect":
+                enlivenedObj.set({
+                  stroke: theme === "light" ? "#141414" : "#fff",
+                })
+                break
+              case "circle":
+                enlivenedObj.set({
+                  stroke: theme === "light" ? "#141414" : "#fff",
+                })
+                break
+              case "triangle":
+                enlivenedObj.set({
+                  stroke: theme === "light" ? "#141414" : "#fff",
+                })
+                break
+              case "line":
+                enlivenedObj.set({
+                  stroke: theme === "light" ? "#141414" : "#fff",
+                })
+                break
+              case "i-text":
+                enlivenedObj.set({
+                  fill: theme === "light" ? "#141414" : "#fff",
+                })
+                break
+              case "path":
+                enlivenedObj.set({
+                  stroke: theme === "light" ? "#141414" : "#fff",
+                })
+                break
+              case "group":
+                enlivenedObj.set({
+                  stroke: theme === "light" ? "#141414" : "#fff",
+                  fill: theme === "light" ? "#141414" : "#fff",
+                })
+                break
 
-          switch (enlivenedObj.type) {
-            case "rect":
-              enlivenedObj.set({
-                stroke: theme === "light" ? "#141414" : "#fff",
-              })
-              break
-            case "circle":
-              enlivenedObj.set({
-                stroke: theme === "light" ? "#141414" : "#fff",
-              })
-              break
-            case "triangle":
-              enlivenedObj.set({
-                stroke: theme === "light" ? "#141414" : "#fff",
-              })
-              break
-            case "line":
-              enlivenedObj.set({
-                stroke: theme === "light" ? "#141414" : "#fff",
-              })
-              break
-            case "i-text":
-              enlivenedObj.set({
-                fill: theme === "light" ? "#141414" : "#fff",
-              })
-              break
-            case "path":
-              enlivenedObj.set({
-                stroke: theme === "light" ? "#141414" : "#fff",
-              })
-              break
-            case "group":
-              enlivenedObj.set({
-                stroke: theme === "light" ? "#141414" : "#fff",
-                fill: theme === "light" ? "#141414" : "#fff",
-              })
-              break
-
-            default:
-              break
+              default:
+                break
+            }
           }
 
           // add object to canvas
