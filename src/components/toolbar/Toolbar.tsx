@@ -85,6 +85,7 @@ export type ToolItemsProps = {
   title: string
   icon?: JSX.Element
   value: string
+  number?: string
 }
 
 type ToolbarProps = {
@@ -177,6 +178,7 @@ const Toolbar = ({
         />
       ),
       value: "select",
+      number: "1",
     },
     {
       title: "Rectangle",
@@ -188,6 +190,7 @@ const Toolbar = ({
         />
       ),
       value: "rectangle",
+      number: "2",
     },
     {
       title: "Triangle",
@@ -199,6 +202,7 @@ const Toolbar = ({
         />
       ),
       value: "triangle",
+      number: "3",
     },
     {
       title: "Circle",
@@ -210,6 +214,7 @@ const Toolbar = ({
         />
       ),
       value: "circle",
+      number: "4",
     },
     {
       title: "Line",
@@ -221,6 +226,7 @@ const Toolbar = ({
         />
       ),
       value: "line",
+      number: "5",
     },
     {
       title: "Arrow",
@@ -232,6 +238,7 @@ const Toolbar = ({
         />
       ),
       value: "group",
+      number: "6",
     },
 
     {
@@ -244,6 +251,7 @@ const Toolbar = ({
         />
       ),
       value: "freeform",
+      number: "7",
     },
     {
       title: "Text",
@@ -255,6 +263,7 @@ const Toolbar = ({
         />
       ),
       value: "text",
+      number: "8",
     },
     {
       title: "Image",
@@ -266,6 +275,7 @@ const Toolbar = ({
         />
       ),
       value: "image",
+      number: "9",
     },
     {
       title: "Delete",
@@ -570,6 +580,7 @@ const Toolbar = ({
         return () => {}
     }
   }
+
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setColor(event.target.value)
     setBoardBg(event.target.value)
@@ -596,12 +607,60 @@ const Toolbar = ({
       }
     }
 
+    const hanleKeyDown = (e: KeyboardEvent) => {
+      toolItems.map((item) => {
+        switch (e.key) {
+          case "1":
+            setActiveTool("Select")
+            item.title === "Select" && handleActive(item)
+            break
+          case "2":
+            setActiveTool("Rectangle")
+            item.title === "Rectangle" && handleActive(item)
+            break
+          case "3":
+            setActiveTool("Triangle")
+            item.title === "Triangle" && handleActive(item)
+            break
+          case "4":
+            setActiveTool("Circle")
+            item.title === "Circle" && handleActive(item)
+            break
+          case "5":
+            setActiveTool("Line")
+            item.title === "Line" && handleActive(item)
+            break
+          case "6":
+            setActiveTool("Arrow")
+            item.title === "Arrow" && handleActive(item)
+            break
+          case "7":
+            setActiveTool("Free drawing")
+            item.title === "Free drawing" && handleActive(item)
+            break
+          case "8":
+            setActiveTool("Text")
+            item.title === "Text" && handleActive(item)
+            break
+          case "9":
+            setActiveTool("Image")
+            item.title === "Image" && handleActive(item)
+            break
+
+          default:
+            break
+        }
+      })
+    }
+
     window.addEventListener("mousedown", handleClick)
     window.addEventListener("mouseup", handleMouseUp)
+    window.addEventListener("keydown", hanleKeyDown)
 
     return () => {
       window.removeEventListener("mousedown", handleClick)
       window.removeEventListener("mouseup", handleMouseUp)
+      window.removeEventListener("keydown", hanleKeyDown)
     }
   }, [])
 
@@ -844,7 +903,7 @@ const Toolbar = ({
         </div>
       </div>
       <nav className="w-2/4 h-full flex items-center justify-center">
-        <ul className="w-max h-max flex flex-row gap-2 bg-white border-[1px] border-black/10 shadow-md rounded-xl py-1 px-1.5 dark:bg-[#090909] dark:border-white/10">
+        <ul className="w-max h-max flex flex-row gap-2 bg-white border-[1px] border-black/10 shadow-md rounded-lg py-1 px-1.5 dark:bg-[#090909] dark:border-white/10">
           {toolItems.map((item, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
@@ -858,15 +917,20 @@ const Toolbar = ({
                     className={cn({
                       "w-[1px] h-10 flex items-center justify-center":
                         item.title === "Divider",
-                      "w-10 h-10 flex items-center justify-center cursor-pointer rounded-xl hover:bg-black/10 dark:hover:bg-white/10":
+                      "relative w-10 h-10 flex items-center justify-center cursor-pointer rounded-lg hover:bg-black/10 dark:hover:bg-white/10":
                         item.title !== "Divider",
-                      "bg-primary/20 text-white dark:bg-primary dark:hover:bg-primary/80":
+                      "bg-primary/20 text-white dark:bg-primary dark:hover:bg-primary/80 rounded-lg":
                         activeTool === item.title,
                     })}
                   >
                     {item.icon}
                     {item.title === "Divider" && (
                       <span className="w-full h-8 bg-black/40 dark:bg-white/40" />
+                    )}
+                    {item.number && (
+                      <span className="absolute bottom-[2px] right-1 text-black/50 dark:text-white/40 text-[10px] rounded-full flex items-center justify-center">
+                        {item.number}
+                      </span>
                     )}
                   </li>
                   <input
