@@ -6,9 +6,9 @@ Drawing Online is a real-time collaborative application where users can create d
 
 ## 📣 Features
 
-- **[🔁 Real-time Collaboration]**
-- **[✍ Draw, Style and Create]**
-- **[🔨 Working for more]**
+- **🔁 Real-time Collaboration**
+- **✍ Draw, Style and Create**
+- **🔨 Working for more**
 
 ## 🛠 Technologies Used
 
